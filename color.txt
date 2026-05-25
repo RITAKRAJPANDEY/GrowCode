@@ -1,0 +1,53 @@
+{
+  "theme": "Monolithic Indigo & Cyber Emerald",
+  "palette": [
+    {
+      "role": "Deep Background",
+      "tailwindClass": "bg-slate-950",
+      "hex": "#020617",
+      "useCase": "The main canvas background of your entire application."
+    },
+    {
+      "role": "Card Canvas",
+      "tailwindClass": "bg-slate-900",
+      "hex": "#0f172a",
+      "useCase": "Dashboard cards, chat boxes, sidebars, and form inputs."
+    },
+    {
+      "role": "Borders / Dividers",
+      "tailwindClass": "border-slate-800",
+      "hex": "#1e293b",
+      "useCase": "Clean, subtle grid lines and card borders."
+    },
+    {
+      "role": "Primary Text",
+      "tailwindClass": "text-slate-100",
+      "hex": "#f1f5f9",
+      "useCase": "Titles, headers, and primary readable text."
+    },
+    {
+      "role": "Muted Text",
+      "tailwindClass": "text-slate-400",
+      "hex": "#94a3b8",
+      "useCase": "Timestamps, labels, placeholders, and inactive states."
+    },
+    {
+      "role": "Primary Accent",
+      "tailwindClass": "bg-indigo-600",
+      "hex": "#4f46e5",
+      "useCase": "Login buttons, active navigation, profile highlights."
+    },
+    {
+      "role": "Success / Done",
+      "tailwindClass": "text-emerald-400",
+      "hex": "#34d399",
+      "useCase": "Met targets, Codeforces rating increases, completed gym box."
+    },
+    {
+      "role": "Warning / Alert",
+      "tailwindClass": "text-amber-500",
+      "hex": "#f59e0b",
+      "useCase": "Missed targets, warning notifications, current active streaks."
+    }
+  ]
+}
