@@ -29,7 +29,7 @@ export default function Navbar() {
             <div className="flex flex-col gap-8">
 
                 <div className="flex flex-col gap-2">
-                    <h2 className="py-1 px-2 text-sm font-semibold uppercase tracking-wider text-slate-500 bg-[#0f172a]/30 rounded">
+                    <h2 className="py-1 px-2 text-sm font-semibold uppercase tracking-wider text-[#34d399] bg-[#0f172a]/30 rounded">
                         Chat
                     </h2>
                     <Link href="/" className="flex py-1.5 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-lg hover:text-white text-slate-400">Group</Link>
@@ -38,7 +38,7 @@ export default function Navbar() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                    <h2 className="py-1 px-2 text-sm font-semibold uppercase tracking-wider text-slate-500 bg-[#0f172a]/30 rounded">
+                    <h2 className="py-1 px-2 text-sm font-semibold uppercase tracking-wider text-[#34d399] bg-[#0f172a]/30 rounded">
                         Statistics
                     </h2>
                     <Link href="/" className="flex py-1.5 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-lg hover:text-red-700 text-slate-400">Be Content</Link>

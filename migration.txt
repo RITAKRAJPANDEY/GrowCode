@@ -1,0 +1,24 @@
+--migration for this project just open your psql and copy pasta
+
+    CREATE DATABASE growcode;
+
+-- jump into the database 
+     
+    \c growcode
+
+-- tables which we are going to create 
+--1> users table 
+--2> tasks table 
+--3> metrices table 
+
+CREATE TABLE users(
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    role TEXT NOT NULL DEFAULT 'user' ,
+    email TEXT NOT NULL UNIQUE,
+    username TEXT  NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE UNIQUE INDEX idx_user_username ON users(username);
