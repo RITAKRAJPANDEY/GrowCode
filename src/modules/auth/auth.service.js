@@ -1,7 +1,7 @@
 import { ConflictError } from "../../errors/ConflictError";
 import { Unauthorized } from "../../errors/Unauthorized";
-import { addUserRepo, fetchUserRepo } from "./auth.repository";
-import { bcryptCompare, bcryptHash } from "./auth.util";
+import { addUserRepo, fetchUserRepo, storeTokenHashRepo } from "./auth.repository";
+import { bcryptCompare, bcryptHash, createAccessToken, genCryptoHash, shaHash } from "./auth.util";
 
 export const signUpService = async ({ username, password, email }) => {
     try {
@@ -19,21 +19,21 @@ export const signUpService = async ({ username, password, email }) => {
         throw err;
     }
 }
-export const logInService = async ({ username, password }) => {
-try{
-    const user = await fetchUserRepo(username);
-    if (!user) {
-        throw new Unauthorized();
-    }
-    if (!user.active) {
-        throw new Unauthorized();
-    }
-    const isValid= await bcryptCompare(password,user.hashed_password);
-    if(!isValid){
-        throw new Unauthorized();
-    }
-    
-}catch(err){
-    throw err;
-}
+export const logInService = async ({ username, password }) => { 
+        const user = await fetchUserRepo(username);
+        if(!user){
+            throw new Unauthorized();
+        }
+         if(!user.active){
+            throw new Unauthorized();
+        }
+        const isValid = await bcryptCompare(password, user.password);
+        if (!isValid ) {
+            throw new Unauthorized();
+        }
+        const accessToken = createAccessToken(user.id, user.role);
+        const refreshToken = genCryptoHash();
+        const refreshTokenHash = shaHash(refreshToken);
+        await storeTokenHashRepo(refreshTokenHash, user.id);
+        return { refreshToken: refreshToken, accessToken: accessToken, username: user.username }
 }

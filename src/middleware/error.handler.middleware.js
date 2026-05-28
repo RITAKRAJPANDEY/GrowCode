@@ -3,7 +3,7 @@ import { AppError } from "../errors/AppError"
 import { ZodError } from "zod";
 export const errorHandlerMiddleware=(error)=>{
     if(error instanceof ZodError){
-        const formattedErrors = error.errors.map((err)=>({
+        const formattedErrors = error.issues.map((err)=>({
             field:err.path.join('.'),
             message:err.message
         }));
@@ -15,7 +15,7 @@ export const errorHandlerMiddleware=(error)=>{
             status:400
         });
     }// new learning 
-    if(error instanceof AppError){
+    else if(error instanceof AppError){
         return NextResponse.json({
             success:false,
             message:error.message,
@@ -24,9 +24,11 @@ export const errorHandlerMiddleware=(error)=>{
             status:error.statuscode
         })
     }else{
+        console.log(error);
         return NextResponse.json({
             success:false,
             message:"server Error"
+            
         },{
             status:500
         });

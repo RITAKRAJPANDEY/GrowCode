@@ -18,7 +18,7 @@ export const signUpController=async(req)=>{
     });
     }catch(err){
         console.error(err);
-        errorHandlerMiddleware(err);
+       return errorHandlerMiddleware(err);
     }
 }
 export const loginController = async (req)=>{
@@ -34,20 +34,15 @@ export const loginController = async (req)=>{
             path:'/',
             maxAge:60*60*24*32
         });
-        cookieStore.set('accessToken',user.accessToken,{
-            httpOnly:true,
-            secure:process.env.NODE_ENV==='production',
-            sameSite:'strict',
-            path:'/',
-            maxAge:60*16
-        })
+        
         return NextResponse.json({
             success:true,
-            created_at:user.created_at
+            username:user.username,
+            accessToken:user.accessToken
         });
         
     }catch(err){
-        errorHandlerMiddleware(err);
+       return errorHandlerMiddleware(err);
     }
 
 }
