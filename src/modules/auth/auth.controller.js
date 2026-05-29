@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { logInService, refreshTokenService, signUpService} from "./auth.service"
+import { logInService, logOutUserService, refreshTokenService, signUpService} from "./auth.service"
 import {  logInSchema, refreshTokenSchema, signUpSchema } from "./auth.validator";
 import { errorHandlerMiddleware } from "../../middleware/error.handler.middleware";
-import { cookies } from "next/headers";
 
 export const signUpController=async(req)=>{
     try{
@@ -31,7 +30,7 @@ export const loginController = async (req)=>{
             success:true,
             username:user.username,
             accessToken:user.accessToken
-        });
+        },{status:200});
         response.cookies.set('refreshToken',user.refreshToken,{
             httpOnly:true,
             secure:process.env.NODE_ENV==='production',
@@ -57,7 +56,7 @@ export const refreshTokenController=async(req)=>{
             success:true,
             accessToken:user.accessToken,
             created_at:user.created_at
-        });
+        },{status:200});
         response.cookies.set('refreshToken',user.refreshToken,{
             httpOnly:true,
             secure:process.env.NODE_ENV==='production',
@@ -69,4 +68,19 @@ export const refreshTokenController=async(req)=>{
     }catch(err){
         return errorHandlerMiddleware(err);
     }
+}
+export const logOutController=async(req)=>{
+    try{
+        const rawData = await req.json();
+        const validatedData = refreshTokenSchema.parse(rawData);
+        await logOutUserService(validatedData);
+  
+    return NextResponse.json({
+        success: true,
+        message: "logged out successfully"
+    },{status:201});
+    }catch(err){
+        return errorHandlerMiddleware(err);
+    }
+  
 }

@@ -1,13 +1,13 @@
 import { ConflictError } from "../../errors/ConflictError";
 import { Unauthorized } from "../../errors/Unauthorized";
-import { addNewRefreshTokenRepo, addUserRepo, fetchUserIdRepo, fetchUserRepo, getRefreshTokenRepo, revokeAllRefreshTokens, storeTokenHashRepo } from "./auth.repository";
+import { addNewRefreshTokenRepo, addUserRepo, fetchUserIdRepo, fetchUserRepo, getRefreshTokenRepo, revokeAllRefreshTokens, revokeToken, storeTokenHashRepo } from "./auth.repository";
 import { bcryptCompare, bcryptHash, createAccessToken, genCryptoHash, shaHash } from "./auth.util";
 
 export const signUpService = async ({ username, password, email }) => {
     try {
         const hashed_password = await bcryptHash(password);
-        const hashed_email = await bcryptHash(email);
-        const user = await addUserRepo(username, hashed_password, hashed_email);
+        
+        const user = await addUserRepo(username, hashed_password,email);
         return {
             created_at: user.created_at,
             username: user.username
@@ -55,5 +55,22 @@ export const refreshTokenService=async({refreshToken})=>{
    const token= await addNewRefreshTokenRepo(tokenHash,user.user_id,shaHash(refreshToken));//newtoken,userid,oldtoken
     return {accessToken:newAccessToken,refreshToken:newRefreshToken,created_at:token.created_at}
 
+    
+}
+export const logOutUserService = async({refreshToken})=>{//order of checks matter as if date is checked with the user not found then hacker trying an old token will see unauthorized and the second if statement won't be able to revoke all the tokens , as for a old token if is_revoked is true then it should revoke all tokens
+    const hashedToken = shaHash(refreshToken);
+    const user = await getRefreshTokenRepo(hashedToken);
+    if(!user){
+        throw new Unauthorized(); 
+    }
+    if(user.is_revoked){
+        await revokeAllRefreshTokens(user.user_id)
+        throw new Unauthorized();
+    }
+     if(new Date(user.expires_at).getTime()< Date.now()){
+        throw new Unauthorized(); 
+    }
+
+    await revokeToken(hashedToken);
     
 }
