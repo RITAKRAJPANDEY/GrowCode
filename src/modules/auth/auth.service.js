@@ -1,6 +1,6 @@
 import { ConflictError } from "../../errors/ConflictError";
 import { Unauthorized } from "../../errors/Unauthorized";
-import { addUserRepo, fetchUserRepo, storeTokenHashRepo } from "./auth.repository";
+import { addNewRefreshTokenRepo, addUserRepo, fetchUserIdRepo, fetchUserRepo, getRefreshTokenRepo, revokeAllRefreshTokens, storeTokenHashRepo } from "./auth.repository";
 import { bcryptCompare, bcryptHash, createAccessToken, genCryptoHash, shaHash } from "./auth.util";
 
 export const signUpService = async ({ username, password, email }) => {
@@ -36,4 +36,24 @@ export const logInService = async ({ username, password }) => {
         const refreshTokenHash = shaHash(refreshToken);
         await storeTokenHashRepo(refreshTokenHash, user.id);
         return { refreshToken: refreshToken, accessToken: accessToken, username: user.username }
+}
+export const refreshTokenService=async({refreshToken})=>{
+   
+    const user = await getRefreshTokenRepo(shaHash(refreshToken));
+    if(!user){
+        throw new Unauthorized(); 
+    }
+    if(user.is_revoked||new Date(user.expires_at).getTime()<Date.now()){
+        await revokeAllRefreshTokens(user.user_id)
+        throw new Unauthorized();
+    }
+    // generate new access and refresh token and send it to the user also revoke this refresh token (make it atomic) and store the new refreshtoken  catch db error if unable to do so and throw db error 
+    const userId = await fetchUserIdRepo(user.user_id);
+    const newAccessToken = createAccessToken(user.user_id,userId.role);
+    const newRefreshToken = genCryptoHash();
+    const tokenHash=shaHash(newRefreshToken);
+   const token= await addNewRefreshTokenRepo(tokenHash,user.user_id,shaHash(refreshToken));//newtoken,userid,oldtoken
+    return {accessToken:newAccessToken,refreshToken:newRefreshToken,created_at:token.created_at}
+
+    
 }

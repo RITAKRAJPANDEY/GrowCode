@@ -22,3 +22,9 @@ export const logInSchema=z.object({
     .min(8,{message:"minimum length 8 characters"}),
     role:z.enum(['user','admin']).default('user'),
 });
+export const refreshTokenSchema=z.object({
+    refreshToken:z.string({required_error:"Refresh Token is Required",invalid_type_error:"Refresh Token Must Be a String"})
+    .trim()
+    .min(1,{message:"Refresh Token can't be empty"})
+    .max(2048,{message:"Too long for refreshtoken"})
+})
