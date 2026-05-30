@@ -1,27 +1,17 @@
 'use client';
 import Button from "../components/Button"
 export default function Hero() {
-
     return <div className=" flex items-center position:fixed justify-center min-height-screen w-full">
-        <div className="absolute  inset-0 flex flex-col justify-center items-center p-6 text-center ">
-
-           
-            <div className="max-w-4xl flex flex-col items-center gap-6 pointer-events-auto select-none">
-
-
-
-               
+        <div className="absolute  inset-0 flex flex-col justify-center items-center p-6 text-center ">           
+            <div className="max-w-4xl flex flex-col items-center gap-6 pointer-events-auto select-none">              
                 <h1 className="text-8xl font-extrabold text-white drop-shadow-[0_0_25px_rgba(34,211,238,0.3)]">
                     <span className="text-[#34d399]">
                         Grow
                     </span>
                     <span className="">
                         Code
-                    </span>
-                    
-                </h1>
-
-             
+                    </span>                   
+                </h1>            
                 <p className="text-xl md:text-2xl font-medium text-slate-300 max-w-2xl balance leading-relaxed">
                     Crush daily goals. Share your progress. <br />
                     <span className="text-slate-400 text-lg md:text-xl font-normal">
