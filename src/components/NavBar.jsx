@@ -48,14 +48,9 @@ export default function Navbar() {
             </div>
 </div>
             <div className="mt-auto pt-4 border-t rounded-md bg-[#020617]  border-[#0f172a]">
+              
                 <Link
-                    href="/"
-                    className="flex py-2 justify-center rounded-md w-full text-slate-400 hover:text-blue-400 hover:bg-blue-950/20 transition-colors"
-                >
-                    Log In
-                </Link>
-                <Link
-                    href="/"
+                    href="/logout"
                     className="flex py-2 justify-center rounded-md w-full text-slate-400 hover:text-red-400 hover:bg-red-950/20 transition-colors">Log Out</Link>
             </div>
 

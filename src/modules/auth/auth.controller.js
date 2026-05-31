@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { logInService, logOutUserService, refreshTokenService, signUpService} from "./auth.service"
 import {  logInSchema, refreshTokenSchema, signUpSchema } from "./auth.validator";
 import { errorHandlerMiddleware } from "../../middleware/error.handler.middleware";
+import { cookies } from "next/headers";
+import { request } from "http";
+import { date } from "zod/mini";
 
 export const signUpController=async(req)=>{
     try{
@@ -69,16 +72,31 @@ export const refreshTokenController=async(req)=>{
         return errorHandlerMiddleware(err);
     }
 }
-export const logOutController=async(req)=>{
+export const logOutController=async()=>{
     try{
-        const rawData = await req.json();
-        const validatedData = refreshTokenSchema.parse(rawData);
-        await logOutUserService(validatedData);
+        const cookieStore = await cookies();
+        const refreshToken=cookieStore.get("refreshToken")?.value;
+        if(refreshToken){
+            try{
+                 await logOutUserService({refreshToken});
+            }catch(err){
+                console.error(err);
+                console.warn("Token reocation skipped / failed ");
+            }
+           
+        }
+        cookieStore.set("refreshToken","",{
+            httpOnly:true,
+            secure:process.env.NODE_ENV==='production',
+            sameSite:'strict',
+            path:'/',
+            expires:new Date(0)
+        })
   
     return NextResponse.json({
         success: true,
         message: "logged out successfully"
-    },{status:201});
+    },{status:200});
     }catch(err){
         return errorHandlerMiddleware(err);
     }

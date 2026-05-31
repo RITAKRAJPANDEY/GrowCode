@@ -1,5 +1,5 @@
 import { logOutController } from "../../../../modules/auth/auth.controller"
 
-export const POST =(req)=>{
-    return logOutController(req);
+export const POST =()=>{
+    return logOutController();
 }
