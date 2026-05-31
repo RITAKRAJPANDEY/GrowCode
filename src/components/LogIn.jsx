@@ -11,7 +11,7 @@ export default function LogIn() {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const [isSuccess, setIsSuccess] = useState(true);
-    const [showPassword,setShowPassword]=useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     useEffect(() => {
         if (!message) {
             return;
@@ -83,14 +83,14 @@ export default function LogIn() {
 
                         <div className="relative flex w-full items-center">
                             <input
-                                type={showPassword?"text":"password"}
+                                type={showPassword ? "text" : "password"}
                                 placeholder="Password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="w-full rounded-md h-10 pl-4 pr-12 bg-transparent border border-white text-white focus:border-[#34d399] outline-none transition-all"
                             />
                             <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                                <ActionButton onToggle={()=>setShowPassword(!showPassword)} />
+                                <ActionButton onToggle={() => setShowPassword(!showPassword)} />
                             </div>
                         </div>
 
@@ -102,7 +102,7 @@ export default function LogIn() {
 
 
                         <div className="w-full flex justify-center mt-2">
-                            <LoginButton label="LogIn" />
+                            <LoginButton label="LogIn"/>
                         </div>
 
 
