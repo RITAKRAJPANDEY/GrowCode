@@ -1,6 +1,8 @@
 'use client';
+import { useRouter } from "next/navigation";
 import Button from "../components/Button"
 export default function Hero() {
+    const router = useRouter();
    return (
     <div className="fixed inset-0 flex items-center justify-center w-full min-h-screen">
         <div className="absolute inset-0 flex flex-col justify-center items-center p-6 text-center">        
@@ -21,7 +23,7 @@ export default function Hero() {
                     </span>
                 </div>
                 <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center pointer-events-auto">
-                    <Button label="Add Task"/>
+                    <Button path={()=>router.push('/addtask')} label="Add Task"/>
                     <button className="px-8 py-3 bg-slate-900/60 text-slate-300 font-semibold rounded-xl border border-slate-800 hover:bg-slate-800/80 transition-all backdrop-blur-sm">
                         View Dashboard
                     </button>

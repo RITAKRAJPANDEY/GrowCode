@@ -8,12 +8,15 @@ export default function Navbar() {
 
 
             <div className="bg-[#020617] rounded-md">
-                <h1 className="text-3xl font-bold px-2">GrowCode</h1>
+                <h1 className="text-3xl font-bold px-2">
+                    <span className="text-[#34d399]">
+                        Grow
+                        </span>Code</h1>
             </div>
                 <div >
             <div className="flex flex-col gap-4">
                 <Link
-                    href="/"
+                    href="/addtask"
                     className="flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all text-slate-400"
                 >
                     Add Task

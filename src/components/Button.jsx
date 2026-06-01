@@ -2,10 +2,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = ({label}) => {
+
+const Button = ({path,label}) => {
+ 
   return (
     <StyledWrapper>
-      <button className="text-white button">
+      <button onClick={path} className="text-white button">
      {label}
         <div className="hoverEffect">
           <div />

@@ -1,7 +1,6 @@
 'use client';
 import Navbar from "../../components/NavBar"
 import Hyperspeed from "../../components/Hyperspeed"
-import Hero from "../../components/Hero"
 import LogOut from "../../components/LogOut"
 
 export default function Main(){

@@ -3,8 +3,7 @@ import { logInService, logOutUserService, refreshTokenService, signUpService} fr
 import {  logInSchema, refreshTokenSchema, signUpSchema } from "./auth.validator";
 import { errorHandlerMiddleware } from "../../middleware/error.handler.middleware";
 import { cookies } from "next/headers";
-import { request } from "http";
-import { date } from "zod/mini";
+
 
 export const signUpController=async(req)=>{
     try{
