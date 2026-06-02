@@ -6,22 +6,37 @@ import Switch from "./yesButton";
 import { useEffect } from 'react';
 
 export default function AddTasks() {
-    const [date,setDate]=useState(null);
+    const [date, setDate] = useState(null);
     const [workout, setWorkout] = useState(true);
     const [commits, setCommits] = useState("");
-    const [platform , setPlatform] = useState("");
-    const [dsaq , setDsaq]= useState("");
+    const [platform, setPlatform] = useState("");
+    const [dsaq, setDsaq] = useState("");
     const [project, setProject] = useState("");
     const [description, setDescription] = useState("");
-    const [other1 , setOther1]=useState("");
-    const [other2 , setOther2]=useState("");
+    const [other1, setOther1] = useState("");
+    const [other2, setOther2] = useState("");
 
-    useEffect(()=>{
+    useEffect(() => {
         //eslint-disable-next-line
-      setDate(dayjs());
-    },[]);
+        setDate(dayjs());
+    }, []);
 
-    const handleSubmit=(e)=>{
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const Task = {
+            date: date ? date : new Date().toISOString(),
+            workout: workout,
+            commits: commits ? Number(commits) : 0,
+            dsa: {
+                platform: platform,
+                dsaq: dsaq ? Number(dsaq) : 0,
+            },
+            project: project,
+            description: description,
+            other1: other1,
+            other2: other2
+        }
 
     }
 
@@ -38,12 +53,12 @@ export default function AddTasks() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
                             <div className="w-full">
-                               <h1 className='text-white text-2xl'>{date?date.format('DD/MM/YYYY'):"no Date Selected"}</h1>
+                                <h1 className='text-white text-2xl'>{date ? date.format('DD/MM/YYYY') : "no Date Selected"}</h1>
                             </div>
 
                             <div className="w-full flex flex-col pt-2 md:pt-0">
                                 <span className="text-sm text-gray-400 mb-1">Workout ?</span>
-                                <Switch onToggle={()=>setWorkout(!workout)} />
+                                <Switch onToggle={() => setWorkout(!workout)} />
                             </div>
                         </div>
 
@@ -53,7 +68,7 @@ export default function AddTasks() {
                                 <input
                                     type="number"
                                     value={commits}
-                                    onChange={(e)=>setCommits(e.target.value)}
+                                    onChange={(e) => setCommits(e.target.value)}
                                     min="0"
                                     placeholder="0"
                                     className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-white transition-colors"
@@ -63,14 +78,14 @@ export default function AddTasks() {
                             <div className="flex flex-col">
                                 <label className="text-sm text-gray-400 mb-1">CF / LC Solved</label>
                                 <div className="flex gap-2">
-                                    <select className="p-3 rounded-md bg-[#111827] border border-gray-600 text-white focus:outline-none focus:border-white transition-colors">
+                                    <select value={platform} onChange={(e) => setPlatform(e.target.value)} className="p-3 rounded-md bg-[#111827] border border-gray-600 text-white focus:outline-none focus:border-white transition-colors">
                                         <option value="cf">CF</option>
                                         <option value="lc">LC</option>
                                     </select>
                                     <input
                                         type="number"
                                         value={dsaq}
-                                        onChange={(e)=>setDsaq(e.target.value)}
+                                        onChange={(e) => setDsaq(e.target.value)}
                                         min="0"
                                         placeholder="0"
                                         className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-white transition-colors"
@@ -85,7 +100,7 @@ export default function AddTasks() {
                                 <input
                                     type="text"
                                     value={project}
-                                    onClick={(e)=>setProject(e.target.value)}
+                                    onClick={(e) => setProject(e.target.value)}
                                     placeholder="Enter project title"
                                     className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-white transition-colors"
                                 />
@@ -95,18 +110,22 @@ export default function AddTasks() {
                                 <label className="text-sm text-gray-400 mb-1">Description</label>
                                 <input
                                     type="text"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
                                     placeholder="What will you work on?"
                                     className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-white transition-colors"
                                 />
                             </div>
                         </div>
 
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="flex flex-col">
                                 <label className="text-sm text-gray-400 mb-1">Others</label>
                                 <input
                                     type="text"
+                                    value={other1}
+                                    onChange={(e) => setOther1(e.target.value)}
                                     placeholder="Add more task"
                                     className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-white transition-colors"
                                 />
@@ -116,6 +135,8 @@ export default function AddTasks() {
                                 <label className="text-sm text-gray-400 mb-1">Ohters</label>
                                 <input
                                     type="text"
+                                    value={other2}
+                                    onChange={(e) => setOther2(e.target.value)}
                                     placeholder="Add more task"
                                     className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-white transition-colors"
                                 />

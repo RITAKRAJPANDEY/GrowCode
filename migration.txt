@@ -28,7 +28,13 @@ CREATE TABLE users(
 
 --users table constraints and indexes
 
-CREATE UNIQUE INDEX idx_user_username ON users(username);
+--if not using generilization
+CREATE UNIQUE INDEX idx_user_username ON users(username); 
+
+CREATE UNIQUE INDEX idx_lower_user_username ON users(LOWER(username));
+
+
+
 
 
 --refreshtoken table 
@@ -51,3 +57,30 @@ user_agent TEXT
 --refreshtoken constraints and indexes
 
 ALTER TABLE refreshtoken ADD CONSTRAINT fk_refreshtoken_user_id FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE;
+
+
+
+--Tasks Table 
+
+CREATE TABLE tasks(
+
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    user_id UUID NOT NULL,
+    workout BOOLEAN NOT NULL DEFAULT FALSE,
+    commits INT NOT NULL DEFAULT 0,
+    dsaq INT NOT NULL DEFAULT 0,
+    
+   
+
+    platform VARCHAR(50), -- e.g., 'cf', 'lc'
+    project VARCHAR(255),
+    description TEXT,
+    
+    
+
+    other1 VARCHAR(255),
+    other2 VARCHAR(255),
+    created_at TIMESTAMPTZ NOT NUll DEFAULT NOW()
+);
+ALTER TABLE tasks ADD CONSTRAINT fk_tasks_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
