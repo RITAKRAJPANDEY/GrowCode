@@ -99,5 +99,4 @@ export const logOutController=async()=>{
     }catch(err){
         return errorHandlerMiddleware(err);
     }
-  
 }
