@@ -8,7 +8,7 @@ export const addTaskController=async(req)=>{
         const rawData = await req.json();
         const validatedData = taskValidatorSchema.parse(rawData);
         const userId = req.headers.get('x-user-id');
-        const task = await addTaskService({...validatedData,userId});
+        const task = await addTaskService({validatedData,userId});
 
         return NextResponse.json({
             success:true,

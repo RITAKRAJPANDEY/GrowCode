@@ -12,6 +12,10 @@ export const fLoginService=async(data)=>{
     if(!res.ok){
         throw new Error(result.message||"unable to login check service");
     }
+   
+        localStorage.setItem('accessToken',result.accessToken);
+        console.log(result);
+    
     return result;
 }
 export const fLogOutService = async()=>{

@@ -12,6 +12,11 @@ export const createAccessToken=(id,role)=>{
 }
 export const validateAccessToken=(token)=>{
     try{
+        console.log("DEBUG: Token received by verifier ->", {
+            token: token,
+            type: typeof token,
+            length: token ? token.length : 0
+        });
          return jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
     }catch(err){
         throw err;

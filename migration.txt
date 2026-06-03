@@ -65,6 +65,7 @@ ALTER TABLE refreshtoken ADD CONSTRAINT fk_refreshtoken_user_id FOREIGN KEY(user
 CREATE TABLE tasks(
 
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    date DATE DEFAULT CURRENT_DATE,
 
     user_id UUID NOT NULL,
     workout BOOLEAN NOT NULL DEFAULT FALSE,

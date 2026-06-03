@@ -4,6 +4,8 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 import Switch from "./yesButton";
 import { useEffect } from 'react';
+import { addTaskService } from '../services/task.services';
+
 
 export default function AddTasks() {
     const [date, setDate] = useState(null);
@@ -21,28 +23,35 @@ export default function AddTasks() {
         setDate(dayjs());
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const Task = {
-            date: date ? date : new Date().toISOString(),
-            workout: workout,
-            commits: commits ? Number(commits) : 0,
-            dsa: {
+        try {
+            const Task = {
+                date: date ? date.toISOString() : new Date().toISOString(),
+                workout: workout,
+                commits: commits ? Number(commits) : 0,
                 platform: platform,
                 dsaq: dsaq ? Number(dsaq) : 0,
-            },
-            project: project,
-            description: description,
-            other1: other1,
-            other2: other2
+                project: project || "",
+                description: description || "",
+                other1: other1 || "",
+                other2: other2 || ""
+            };
+            await addTaskService(Task);
+            setWorkout(true);
+            setCommits("");
+            setDescription("");
+            setDsaq("");
+            setOther1("");
+            setOther2("");
+            setPlatform("cf");
+            setProject("");
+
+        } catch (err) {
+          console.error(err);
         }
 
     }
-
-
-
-
     return (
         <div className="flex min-h-screen flex-col justify-center items-center p-4">
             <div className="w-full p-6 border border-red-300 shadow-md rounded-md max-w-xl bg-[#0b1329] text-white">
@@ -100,7 +109,7 @@ export default function AddTasks() {
                                 <input
                                     type="text"
                                     value={project}
-                                    onClick={(e) => setProject(e.target.value)}
+                                    onChange={(e) => setProject(e.target.value)}
                                     placeholder="Enter project title"
                                     className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-white transition-colors"
                                 />
