@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { validateAccessToken } from "./modules/auth/auth.util";
 
-const JWT_SECRET = process.env.ACCESS_TOKEN_SECRET;
-
 export function handlePageRouting(request) {
     const { pathname } = request.nextUrl;
     const isLoginPage = pathname === '/login';
@@ -44,9 +42,18 @@ export async function handleApiProtection(request) {
         const token = authHeader.split(' ')[1];
         try {
             
-            const payload = await validateAccessToken(token, JWT_SECRET);
+            const payload = await validateAccessToken(token);
+
+            if(!payload.valid){
+                return NextResponse.json({
+                    success:false,
+                    error:"Unauthorized",
+                    code:"TOKEN_EXPIRED",
+                    expiredAt:payload.expiredAt
+                },{status:401});
+            }
             const requestHeaders = new Headers(request.headers);
-            requestHeaders.set('x-user-id', payload.sub); 
+            requestHeaders.set('x-user-id', payload.decoded.sub); 
             
             return NextResponse.next({
                 request: {
@@ -54,6 +61,7 @@ export async function handleApiProtection(request) {
                 },
             });
         } catch (err) {
+
             console.error('JWT Verification failed:', err);
             return NextResponse.json({
                 success: false,

@@ -4,8 +4,7 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 import Switch from "./yesButton";
 import { useEffect } from 'react';
-import { addTaskService } from '../services/task.services';
-
+import {useTaskStore} from "../store";
 
 export default function AddTasks() {
     const [date, setDate] = useState(null);
@@ -17,7 +16,7 @@ export default function AddTasks() {
     const [description, setDescription] = useState("");
     const [other1, setOther1] = useState("");
     const [other2, setOther2] = useState("");
-
+    const addTask = useTaskStore((state)=>state.addTask);
     useEffect(() => {
         //eslint-disable-next-line
         setDate(dayjs());
@@ -37,7 +36,7 @@ export default function AddTasks() {
                 other1: other1 || "",
                 other2: other2 || ""
             };
-            await addTaskService(Task);
+            addTask(Task);
             setWorkout(true);
             setCommits("");
             setDescription("");
@@ -53,8 +52,8 @@ export default function AddTasks() {
 
     }
     return (
-        <div className="flex min-h-screen flex-col justify-center items-center p-4">
-            <div className="w-full p-6 border border-red-300 shadow-md rounded-md max-w-xl bg-[#0b1329] text-white">
+        <div className="flex min-h-screen flex-col justify-center items-center bg-[#0f172a] p-4">
+            <div className="w-full p-6 border border-[#f59e0b] shadow-md rounded-md max-w-xl  text-white">
                 <div className="flex flex-col gap-6">
                     <h1 className="text-4xl font-semibold">Add Tasks</h1>
 
@@ -80,14 +79,14 @@ export default function AddTasks() {
                                     onChange={(e) => setCommits(e.target.value)}
                                     min="0"
                                     placeholder="0"
-                                    className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-white transition-colors"
+                                    className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-[#f59e0b] transition-colors"
                                 />
                             </div>
 
                             <div className="flex flex-col">
                                 <label className="text-sm text-gray-400 mb-1">CF / LC Solved</label>
                                 <div className="flex gap-2">
-                                    <select value={platform} onChange={(e) => setPlatform(e.target.value)} className="p-3 rounded-md bg-[#111827] border border-gray-600 text-white focus:outline-none focus:border-white transition-colors">
+                                    <select value={platform} onChange={(e) => setPlatform(e.target.value)} className="p-3 rounded-md bg-[#111827] border border-gray-600 text-white focus:outline-none focus:border-[#f59e0b] transition-colors">
                                         <option value="cf">CF</option>
                                         <option value="lc">LC</option>
                                     </select>
@@ -97,7 +96,7 @@ export default function AddTasks() {
                                         onChange={(e) => setDsaq(e.target.value)}
                                         min="0"
                                         placeholder="0"
-                                        className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-white transition-colors"
+                                        className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-[#f59e0b] transition-colors"
                                     />
                                 </div>
                             </div>
@@ -111,7 +110,7 @@ export default function AddTasks() {
                                     value={project}
                                     onChange={(e) => setProject(e.target.value)}
                                     placeholder="Enter project title"
-                                    className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-white transition-colors"
+                                    className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-[#f59e0b] transition-colors"
                                 />
                             </div>
 
@@ -122,7 +121,7 @@ export default function AddTasks() {
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
                                     placeholder="What will you work on?"
-                                    className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-white transition-colors"
+                                    className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-[#f59e0b] transition-colors"
                                 />
                             </div>
                         </div>
@@ -136,7 +135,7 @@ export default function AddTasks() {
                                     value={other1}
                                     onChange={(e) => setOther1(e.target.value)}
                                     placeholder="Add more task"
-                                    className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-white transition-colors"
+                                    className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-[#f59e0b] transition-colors"
                                 />
                             </div>
 
@@ -147,7 +146,7 @@ export default function AddTasks() {
                                     value={other2}
                                     onChange={(e) => setOther2(e.target.value)}
                                     placeholder="Add more task"
-                                    className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-white transition-colors"
+                                    className="w-full p-3 rounded-md bg-transparent border border-gray-600 text-white focus:outline-none focus:border-[#f59e0b] transition-colors"
                                 />
                             </div>
                         </div>
@@ -156,7 +155,7 @@ export default function AddTasks() {
                             type="submit"
                             className="w-full mt-2 p-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors shadow-lg"
                         >
-                            Thats it
+                            Thats it ?
                         </button>
 
                     </form>

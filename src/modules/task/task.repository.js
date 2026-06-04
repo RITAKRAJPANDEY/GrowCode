@@ -9,7 +9,7 @@ export const addTaskRepo = async(taskData,userId)=>{
         project,
         description,
         other1,
-        other2) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING created_at`,[
+        other2) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id ,created_at`,[
         userId,
         taskData.workout,
         taskData.commits,

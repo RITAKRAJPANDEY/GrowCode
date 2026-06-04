@@ -85,3 +85,5 @@ CREATE TABLE tasks(
     created_at TIMESTAMPTZ NOT NUll DEFAULT NOW()
 );
 ALTER TABLE tasks ADD CONSTRAINT fk_tasks_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+
+CREATE UNIQUE INDEX idx_tasks_date_user_id ON tasks(user_id,date);

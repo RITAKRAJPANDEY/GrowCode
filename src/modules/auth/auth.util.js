@@ -12,16 +12,18 @@ export const createAccessToken=(id,role)=>{
 }
 export const validateAccessToken=(token)=>{
     try{
-        console.log("DEBUG: Token received by verifier ->", {
-            token: token,
-            type: typeof token,
-            length: token ? token.length : 0
-        });
-         return jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
+        const decoded =  jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
+        return{ valid:true,decoded}
     }catch(err){
+        if(err.name==="TokenExpiredError"){
+           return{
+            valid: false, 
+            code:'TOKEN_EXPIRED', 
+            expiredAt: err.expiredAt
+           } 
+        }
         throw err;
     }
-   
 }
 export const genCryptoHash=()=>{
     return crypto.randomBytes(32).toString('hex');

@@ -12,7 +12,8 @@ export const addTaskController=async(req)=>{
 
         return NextResponse.json({
             success:true,
-            created_at:task.created_at
+            created_at:task.created_at,
+            id:task.id
         });
     }catch(err){
         return errorHandlerMiddleware(err);
