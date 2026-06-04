@@ -24,11 +24,10 @@ export const errorHandlerMiddleware=(error)=>{
             status:error.statuscode
         })
     }else{
-        console.log(error);
+        console.error('Unhandled error:', error?.message || error, error?.stack || 'no stack');
         return NextResponse.json({
             success:false,
             message:"server Error"
-            
         },{
             status:500
         });

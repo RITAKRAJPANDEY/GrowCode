@@ -1,23 +1,14 @@
-export const addTaskService = async(taskData)=>{
-    const accessToken = localStorage.getItem("accessToken");
-    if(!accessToken||accessToken==="null"){
-        throw new Error("token not found ");
+import { apiClient } from "./apiClient";
+
+export const addTaskService = async(taskData) => {
+    try {
+        const res = await apiClient.post('/task/addtask', taskData);
+        return res.data;
+    } catch (err) {
+        console.error('addTaskService error:', err?.response?.status, err?.response?.data || err.message);
+        if (err?.response?.data?.message) {
+            throw new Error(err.response.data.message);
+        }
+        throw err;
     }
-    try{
-        const res = await fetch('/api/task/addtask',{
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json",
-            "authorization":`Bearer ${accessToken}`
-        },
-        body:JSON.stringify(taskData),
-    });
-    const result = await res.json();
-    if(!res.ok){
-        throw new Error(result.message||"unable to add task")
-    }
-    return result;
-    }catch(err){
-        console.error(err);
-    }
-}
+};

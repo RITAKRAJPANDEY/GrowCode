@@ -47,30 +47,38 @@ export const loginController = async (req)=>{
     }
 
 }
-export const refreshTokenController=async(req)=>{
-    try{
-        const rawData = await req.json();
-        const validatedData = refreshTokenSchema.parse(rawData);
-        const user = await refreshTokenService(validatedData);
-        
-      
-    const response = NextResponse.json({
-            success:true,
-            accessToken:user.accessToken,
-            created_at:user.created_at
-        },{status:200});
-        response.cookies.set('refreshToken',user.refreshToken,{
-            httpOnly:true,
-            secure:process.env.NODE_ENV==='production',
-            sameSite:'strict',
-            path:'/',
-            maxAge:60*60*24*32
+export const refreshTokenController = async (req) => {
+    try {
+        const cookieStore = await cookies();
+        const refreshToken = cookieStore.get('refreshToken')?.value;
+
+        if (!refreshToken) {
+            return NextResponse.json({
+                success: false,
+                message: 'Refresh token missing',
+            }, { status: 401 });
+        }
+
+        const user = await refreshTokenService({ refreshToken });
+
+        const response = NextResponse.json({
+            success: true,
+            accessToken: user.accessToken,
+            created_at: user.created_at,
+        }, { status: 200 });
+
+        response.cookies.set('refreshToken', user.refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            path: '/',
+            maxAge: 60 * 60 * 24 * 32,
         });
         return response;
-    }catch(err){
+    } catch (err) {
         return errorHandlerMiddleware(err);
     }
-}
+};
 export const logOutController=async()=>{
     try{
         const cookieStore = await cookies();

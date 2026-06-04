@@ -36,7 +36,7 @@ export default function AddTasks() {
                 other1: other1 || "",
                 other2: other2 || ""
             };
-            addTask(Task);
+            await addTask(Task);
             setWorkout(true);
             setCommits("");
             setDescription("");
