@@ -28,3 +28,7 @@ export const taskValidatorSchema = z.object({
     other1: z.string().trim().max(255).transform(val => val || null).nullable().optional(),
     other2: z.string().trim().max(255).transform(val => val || null).nullable().optional(),
 });
+
+export const getTaskValidatorSchema = z.object({
+    
+})

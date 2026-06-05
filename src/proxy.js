@@ -28,7 +28,7 @@ export async function handleApiProtection(request) {
     const { pathname } = request.nextUrl;
 
     
-    if (pathname.startsWith('/api/task/addtask')) {
+    if (pathname.startsWith('/api/task/addtask'||'/api/task/gettask')) {
         const authHeader = request.headers.get('authorization');
         
        
@@ -86,5 +86,5 @@ export async function proxy(request) {
 }
 
 export const config = {
-    matcher: ['/', '/login', '/api/task/addtask']
+    matcher: ['/', '/login', '/api/task/addtask','/api/task/gettask']
 }

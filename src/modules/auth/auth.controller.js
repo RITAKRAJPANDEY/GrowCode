@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { logInService, logOutUserService, refreshTokenService, signUpService} from "./auth.service"
-import {  logInSchema, refreshTokenSchema, signUpSchema } from "./auth.validator";
+import {  logInSchema, signUpSchema } from "./auth.validator";
 import { errorHandlerMiddleware } from "../../middleware/error.handler.middleware";
 import { cookies } from "next/headers";
 
@@ -47,7 +47,7 @@ export const loginController = async (req)=>{
     }
 
 }
-export const refreshTokenController = async (req) => {
+export const refreshTokenController = async () => {
     try {
         const cookieStore = await cookies();
         const refreshToken = cookieStore.get('refreshToken')?.value;

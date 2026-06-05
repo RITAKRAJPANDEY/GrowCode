@@ -19,3 +19,9 @@ export const addTaskController=async(req)=>{
         return errorHandlerMiddleware(err);
     }
 }
+export const getTaskController= async(req)=>{//date and user_id
+    const rawData = req.json();
+    const userId = req.headers.get('x-user-id');
+    
+    
+}

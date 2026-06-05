@@ -13,7 +13,7 @@ export default function UtilityBar() {
             </div>
             {tasks.map((tasks)=>(
                  <div key={tasks.date} className="text-[#f1f5f9] flex flex-col gap-2 bg-[#1e293b] px-2">
-                    <h1 className="">{dayjs(tasks.date).format('dddd, MMMM D')}</h1>              
+                    <h1 className="rounded-md ">{dayjs(tasks.date).format('dddd, MMMM D')}</h1>              
             </div>
             ))}
         </div>
