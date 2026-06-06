@@ -1,73 +1,51 @@
-# GrowCode - Task Management Application
+﻿# WinterBreakers
 
-A modern task management application built with Next.js that helps users organize, track, and manage their daily tasks efficiently.
+WinterBreakers is a Next.js task management application with secure authentication, task creation, and interactive dashboard visuals.
 
 ## 🚀 Overview
 
-GrowCode is a full-stack web application designed to provide an intuitive interface for task management with secure authentication and persistent data storage.
+This repository contains a full-stack Next.js app built with React, PostgreSQL, and server-side API routes. It focuses on user authentication, task creation, and a modern UI experience.
 
 ---
 
-## 📋 Features Implemented
+## 📋 Features
 
-### ✅ Authentication System
-- **User Registration (Signup)** - New user account creation with email and username validation
-- **User Login** - Secure authentication with JWT tokens
-- **Logout** - Session termination and token invalidation
-- **Token Refresh** - Automatic token refresh mechanism for persistent sessions
-- **Password Hashing** - Bcrypt encryption for secure password storage
-- **JWT Token Management** - Secure token generation and validation
+### ✅ Authentication
+- User signup with validation
+- User login with JWT access token issuance
+- Secure refresh token storage in httpOnly cookies
+- Logout and refresh token revocation
+- Password hashing using bcrypt
 
 ### ✅ Task Management
-- **Add Tasks** - Create new tasks with task UI interface
-- **Task Dashboard** - Visual dashboard for task management
-- **Task Visualization** - Interactive visualizations using Three.js and Postprocessing
+- Task creation API endpoint
+- Task payload validation with Zod
+- Add task UI flow
+- Task retrieval route scaffolded and pending completion
 
-### ✅ UI/UX Components
-- **Navigation Bar** - Responsive navigation with user menu
-- **Login Interface** - Clean and intuitive login page
-- **Add Task Interface** - Dedicated UI for creating new tasks
-- **Loading States** - Loading indicators for async operations
-- **Action Buttons** - Interactive buttons for various actions
-- **Dashboard Visuals** - Data visualization components
-
-### ✅ Database Schema
-- **Users Table** - User profiles with role-based access
-- **Refresh Token Table** - Token management with expiration
-- **Tasks Table** - Task storage (initialized)
-- **Metrics Table** - Analytics and metrics tracking (initialized)
+### ✅ UI/UX
+- Landing page with animated visuals
+- Login screen and navigation bar
+- Loading and action button components
+- Styled using Tailwind, Emotion, and MUI
 
 ---
 
 ## 🛠 Tech Stack
 
-### Frontend
-- **Next.js 16.2.6** - React framework with server-side rendering
-- **React 19.2.4** - UI library
-- **TypeScript/JavaScript** - Programming languages
-- **TailwindCSS 4** - Utility-first CSS framework
-- **Shadcn UI** - Component library
-- **Lucide React** - Icon library
-- **Three.js** - 3D graphics library
-- **Emotion & MUI** - Styling solutions
-
-### Backend
-- **Next.js API Routes** - Serverless backend
-- **Node.js** - Runtime environment
-- **PostgreSQL** - Database
-
-### Authentication & Security
-- **JWT (jsonwebtoken)** - Token-based authentication
-- **Bcrypt/Bcryptjs** - Password hashing
-- **Zod** - Schema validation
-
-### State Management
-- **Zustand** - Lightweight state management
-
-### Additional Libraries
-- **Day.js** - Date manipulation
-- **dotenv** - Environment variable management
-- **Radix UI** - Unstyled, accessible components
+- Next.js 16.2.6
+- React 19.2.4
+- TailwindCSS 4
+- TypeScript / JavaScript
+- PostgreSQL
+- Axios
+- bcrypt / bcryptjs
+- jsonwebtoken
+- Zod
+- Zustand
+- Three.js
+- MUI / Emotion
+- Radix UI
 
 ---
 
@@ -78,11 +56,14 @@ winterbreakers/
 ├── src/
 │   ├── app/
 │   │   ├── api/
-│   │   │   └── auth/
-│   │   │       ├── login/
-│   │   │       ├── logout/
-│   │   │       ├── refresh/
-│   │   │       └── signup/
+│   │   │   ├── auth/
+│   │   │   │   ├── login/
+│   │   │   │   ├── logout/
+│   │   │   │   ├── refresh/
+│   │   │   │   └── signup/
+│   │   │   └── task/
+│   │   │       ├── addtask/
+│   │   │       └── gettask/
 │   │   ├── addtask/
 │   │   ├── login/
 │   │   ├── logout/
@@ -90,268 +71,108 @@ winterbreakers/
 │   │   ├── page.tsx
 │   │   └── globals.css
 │   ├── components/
-│   │   ├── ActionButton.jsx
-│   │   ├── AddTask.jsx
-│   │   ├── Button.jsx
-│   │   ├── DashboardVisuals.jsx
-│   │   ├── Hero.jsx
-│   │   ├── Hyperspeed.jsx
-│   │   ├── Loading.jsx
-│   │   ├── LogIn.jsx
-│   │   ├── LoginButton.jsx
-│   │   ├── LogOut.jsx
-│   │   ├── NavBar.jsx
-│   │   └── yesButton.jsx
-│   ├── modules/
-│   │   └── auth/
-│   │       ├── auth.controller.js
-│   │       ├── auth.repository.js
-│   │       ├── auth.service.js
-│   │       ├── auth.util.js
-│   │       └── auth.validator.js
 │   ├── errors/
-│   │   ├── AppError.js
-│   │   ├── BadRequestError.js
-│   │   ├── ConflictError.js
-│   │   ├── NotFoundError.js
-│   │   └── Unauthorized.js
 │   ├── middleware/
-│   │   └── error.handler.middleware.js
+│   ├── modules/
+│   │   ├── auth/
+│   │   └── task/
 │   ├── services/
-│   │   └── auth.services.js
-│   ├── lib/
-│   │   └── db.js
-│   └── utils/
+│   └── lib/
 ├── public/
 ├── package.json
 ├── tsconfig.json
 ├── next.config.ts
 ├── postcss.config.mjs
-├── components.json
 └── README.md
 ```
 
 ---
 
-## 🗄 Database Schema
-
-### Users Table
-```sql
-CREATE TABLE users(
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    role TEXT NOT NULL DEFAULT 'user',
-    email TEXT NOT NULL UNIQUE,
-    username TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-    active BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
-CREATE UNIQUE INDEX idx_user_username ON users(username);
-```
-
-### Refresh Token Table
-```sql
-CREATE TABLE refreshtoken(
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL,
-    refresh_hash TEXT NOT NULL,
-    expires_at TIMESTAMPTZ DEFAULT NOW() + INTERVAL '31 days',
-    is_revoked BOOLEAN NOT NULL DEFAULT FALSE,
-    revoked_at TIMESTAMPTZ,
-    replaced_by UUID,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    created_by_ip TEXT,
-    user_agent TEXT
-);
-
-ALTER TABLE refreshtoken ADD CONSTRAINT fk_refreshtoken_user_id 
-    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE;
-```
-
-### Tasks Table
-- Initialized and ready for implementation
-
-### Metrics Table
-- Initialized for analytics tracking
-
----
-
 ## 🔑 API Endpoints
 
-### Authentication Routes
-- `POST /api/auth/signup` - Register new user
-- `POST /api/auth/login` - User login
-- `POST /api/auth/logout` - User logout
-- `POST /api/auth/refresh` - Refresh JWT token
+### Authentication
+- `POST /api/auth/signup`
+- `POST /api/auth/login`
+- `POST /api/auth/logout`
+- `POST /api/auth/refresh`
+
+### Task Routes
+- `POST /api/task/addtask`
+- `GET /api/task/gettask` (scaffolded)
 
 ---
 
-## 🚀 Getting Started
+## 📦 Available Scripts
 
-### Prerequisites
-- Node.js (v16 or higher)
-- PostgreSQL database
-- PNPM package manager
-
-### Installation
-
-1. **Clone the repository**
 ```bash
-git clone https://github.com/RITAKRAJPANDEY/GrowCode.git
-cd GrowCode
+pnpm dev
+pnpm build
+pnpm start
+pnpm lint
 ```
 
-2. **Install dependencies**
+---
+
+## 🚀 Setup
+
+### Prerequisites
+- Node.js v16+
+- PNPM
+- PostgreSQL
+
+### Install
+
 ```bash
+git clone <repo-url>
+cd winterbreakers
 pnpm install
 ```
 
-3. **Set up environment variables**
-Create a `.env.local` file in the root directory:
+### Environment
+
+Create a `.env.local` file in the project root with the following values:
+
 ```env
-DATABASE_URL=postgresql://user:password@localhost:5432/growcode
-JWT_SECRET=your_jwt_secret_key
-NEXT_PUBLIC_API_URL=http://localhost:3000
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
+DB_HOST=localhost
+DB_NAME=your_db_name
+DB_PORT=5432
+ACCESS_TOKEN_SECRET=your_jwt_secret
 ```
 
-4. **Set up the database**
-```bash
-# Open PostgreSQL
-psql
+### Run
 
-# Create database and run migrations (see migration.txt for SQL)
-```
-
-5. **Run the development server**
 ```bash
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000` in your browser.
 
 ---
 
-## 📦 Scripts
+## 🧠 Notes
 
-```bash
-# Development
-pnpm dev          # Start development server
-
-# Production
-pnpm build        # Build for production
-pnpm start        # Start production server
-
-# Code Quality
-pnpm lint         # Run ESLint
-```
+- Access tokens are stored on the client side.
+- Refresh tokens are stored in secure httpOnly cookies.
+- The authentication system is handled in `src/modules/auth`.
+- Axios is configured in `src/services/apiClient.js` for `/api` requests with token refresh support.
+- Task retrieval is not yet completed in `src/modules/task`.
 
 ---
 
-## 🏗 Architecture
+## 📌 Project Overview
 
-### Error Handling
-- Custom error classes for different scenarios:
-  - `AppError` - Generic application error
-  - `BadRequestError` - Invalid request data
-  - `ConflictError` - Resource conflict
-  - `NotFoundError` - Resource not found
-  - `Unauthorized` - Authentication/Authorization failure
-
-### Middleware
-- Error handler middleware for request/response error management
-
-### Modules
-- **Auth Module** - Encapsulated authentication logic with:
-  - Controller - Request/response handling
-  - Service - Business logic
-  - Repository - Data access
-  - Validator - Input validation
-  - Utility - Helper functions
+- `src/app/page.tsx` is the landing page.
+- `src/app/login/page.jsx` renders the login UI.
+- `src/components` holds reusable UI components.
+- `src/lib/db.js` configures PostgreSQL using environment variables.
 
 ---
 
-## 🔐 Security Features
+## 📚 Further Development
 
-- **Password Hashing** - Bcrypt for secure password storage
-- **JWT Tokens** - Secure session management
-- **Token Refresh** - Automatic token rotation
-- **Token Revocation** - Logout functionality with token invalidation
-- **Input Validation** - Zod schema validation
-- **Role-Based Access** - User role management in database
-
----
-
-## 🎨 UI Components
-
-- **Hero Component** - Landing page hero section
-- **NavBar** - Navigation with user authentication status
-- **LoginButton/LogoutButton** - Auth action buttons
-- **AddTask Component** - Task creation interface
-- **DashboardVisuals** - Data visualization dashboard
-- **Hyperspeed Effect** - Animated 3D background using Three.js
-- **Loading Component** - Loading state indicator
-- **ActionButton** - Reusable action button component
-
----
-
-## 📝 File Descriptions
-
-| File | Purpose |
-|------|---------|
-| `next.config.ts` | Next.js configuration |
-| `tsconfig.json` | TypeScript configuration |
-| `tailwind.config.ts` | TailwindCSS configuration |
-| `components.json` | Component library configuration |
-| `postcss.config.mjs` | PostCSS configuration |
-| `proxy.js` | API proxy setup |
-
----
-
-## 🚧 In Development
-
-- Complete task CRUD operations
-- Advanced task filtering and sorting
-- User profile management
-- Task analytics and metrics
-- Real-time notifications
-- Collaborative task management
-
----
-
-## 📚 Learn More
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [React Documentation](https://react.dev)
-- [TailwindCSS Documentation](https://tailwindcss.com/docs)
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
----
-
-## 📄 License
-
-This project is open source and available under the MIT License.
-
----
-
-## 👨‍💻 Author
-
-**RITAKRAJPANDEY**
-- GitHub: [@RITAKRAJPANDEY](https://github.com/RITAKRAJPANDEY)
-
----
-
-## 📧 Support
-
-For support, please open an issue on the [GitHub repository](https://github.com/RITAKRAJPANDEY/GrowCode).
-
----
-
-**Last Updated:** June 2026
+- Complete task retrieval and task management workflows
+- Add update/delete task operations
+- Add database migrations and seed scripts
+- Improve dashboard analytics and visuals
