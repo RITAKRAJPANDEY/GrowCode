@@ -24,3 +24,8 @@ export const addTaskRepo = async(taskData,userId)=>{
     ]);
     return result.rows[0]||null;
 }//axios , cookiesstore using zustand and zustand psql sync 
+
+export const getTaskRepo= async(date , userId)=>{
+    const result = await pool.query(`SELECT workout,commits,dsaq,platform,project,description,other1,other2,created_at FROM tasks WHERE user_id = $1 AND date = $2`,[userId,date]);
+    return result.rows[0]||null;
+}
