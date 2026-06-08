@@ -1,15 +1,14 @@
 import { z } from "zod";
 
 export const taskValidatorSchema = z.object({
-    date: z.string()
-        .datetime({ message: "Invalid ISO date format" }),
+    date: z.coerce.date({ message: "Invalid ISO date format" }),
         
     workout: z.boolean()
         .default(true),
         
     commits: z.preprocess(
         (val) => (val === "" || val === undefined || val === null ? 0 : Number(val)),
-        z.number().int().min(0, "Commits cannot be negative").default(0)
+        z.coerce.number().int().min(0, "Commits cannot be negative").default(0)
     ),
     
     platform: z.union([
@@ -20,7 +19,7 @@ export const taskValidatorSchema = z.object({
     
     dsaq: z.preprocess(
         (val) => (val === "" || val === undefined || val === null ? 0 : Number(val)),
-        z.number().int().min(0, "dsaq cannot be negative").default(0)
+        z.coerce.number().int().min(0, "dsaq cannot be negative").default(0)
     ),
     
     project: z.string().trim().max(255).transform(val => val || null).nullable().optional(),
@@ -30,7 +29,7 @@ export const taskValidatorSchema = z.object({
 });
 
 export const getTaskValidatorSchema = z.object({
-    date:z.string()
+    date:z.coerce
     .date({message:"Invalid date ISO"})
     
 })

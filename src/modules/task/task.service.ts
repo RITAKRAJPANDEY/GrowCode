@@ -2,22 +2,23 @@ import { addTaskRepo, getTaskRepo } from "./task.repository";
 import { AppError } from "../../errors/AppError";
 import {Unauthorized} from "../../errors/Unauthorized"
 import { BadRequestError } from "../../errors/BadRequestError";
-export const addTaskService = async({validatedData,userId})=>{
+import { taskData } from "./types";
+export const addTaskService = async({validatedData,userId}:{validatedData:taskData,userId:string})=>{
     if (!userId) {
         throw new AppError("Unauthorized request", 401);
     }
     try {
         const task = await addTaskRepo(validatedData,userId);
         return { created_at: task?.created_at ?? null, id: task?.id ?? null };
-    } catch (error) {
-        if (error?.code === '23505') {
+    } catch (error:unknown) {
+        if ((error as {code?:string}).code === '23505') {
             throw new AppError('A task for this date already exists.', 409);
         }
         throw error;
     }
 }
 
-export const getTaskService = async({validatedData,userId})=>{
+export const getTaskService = async({validatedData,userId}:{validatedData:Date,userId:string})=>{
     if(!userId){
         throw new  Unauthorized()
     }

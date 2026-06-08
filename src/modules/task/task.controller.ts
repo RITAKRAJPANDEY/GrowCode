@@ -4,11 +4,12 @@ import { addTaskService, getTaskService } from "./task.service";
 import { getTaskValidatorSchema, taskValidatorSchema } from "./task.validator";
 
 
+
 export const addTaskController=async(req:NextRequest):Promise<NextResponse>=>{
     try{
         const rawData = await req.json();
         const validatedData = taskValidatorSchema.parse(rawData);
-        const userId = req.headers.get('x-user-id');
+        const userId = req.headers.get('x-user-id')||"";
         const task = await addTaskService({validatedData,userId});
 
         return NextResponse.json({
@@ -25,10 +26,10 @@ export const addTaskController=async(req:NextRequest):Promise<NextResponse>=>{
 export const getTaskController= async(req:NextRequest):Promise<NextResponse>=>{//date and user_id
     try{
         const rawData = await req.json();
-        const userId = req.headers.get('x-user-id');
+        const userId = req.headers.get('x-user-id')||"";
         console.log(userId)
         const validatedData = getTaskValidatorSchema.parse(rawData);
-        const task = await getTaskService({validatedData,userId});
+        const task = await getTaskService({validatedData:validatedData.date,userId});
         
         return NextResponse.json({
             success:true,

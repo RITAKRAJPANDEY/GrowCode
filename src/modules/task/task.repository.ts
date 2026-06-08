@@ -2,14 +2,14 @@ import {pool} from "../../lib/db"
 import { taskData } from "./types";
 
 interface getTaskRowData{
-    workout:string;
+    workout:boolean;
     commits:number;
     dsaq:number;
-    platform:string;
-    project:string;
-    description:string;
-    other1:string;
-    other2:string;
+    platform:string| null;
+    project:string |null;
+    description:string | null;
+    other1:string | null;
+    other2:string |null;
     created_at:Date;
     id:string;
 }

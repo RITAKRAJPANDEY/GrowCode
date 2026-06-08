@@ -1,13 +1,13 @@
 export interface taskData {
   date:Date;
-  workout:string;
+  workout:boolean;
   dsaq:number;
-  platform:string;
-  project:string;
+  platform:string | null;
+  project?:string | null;
   commits:number;
-  description:string;
-  other1:string;
-  other2:string;
+  description?:string |null;
+  other1?:string | null;
+  other2?:string |null;
 }
 // taskData.date,
 //         userId,
