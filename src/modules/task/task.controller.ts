@@ -1,9 +1,10 @@
-import { NextResponse } from "next/server";
+import { NextResponse,NextRequest } from "next/server";
 import { errorHandlerMiddleware } from "../../middleware/error.handler.middleware";
 import { addTaskService, getTaskService } from "./task.service";
 import { getTaskValidatorSchema, taskValidatorSchema } from "./task.validator";
 
-export const addTaskController=async(req)=>{
+
+export const addTaskController=async(req:NextRequest):Promise<NextResponse>=>{
     try{
         const rawData = await req.json();
         const validatedData = taskValidatorSchema.parse(rawData);
@@ -20,13 +21,14 @@ export const addTaskController=async(req)=>{
     }
 }
 
-export const getTaskController= async(req)=>{//date and user_id
+
+export const getTaskController= async(req:NextRequest):Promise<NextResponse>=>{//date and user_id
     try{
         const rawData = await req.json();
         const userId = req.headers.get('x-user-id');
         console.log(userId)
         const validatedData = getTaskValidatorSchema.parse(rawData);
-        const task = getTaskService({validatedData,userId});
+        const task = await getTaskService({validatedData,userId});
         
         return NextResponse.json({
             success:true,
