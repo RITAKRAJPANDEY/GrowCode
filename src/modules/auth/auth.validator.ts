@@ -1,4 +1,3 @@
-import { BadRequestError } from "@/src/errors/BadRequestError";
 import {z} from "zod";
 
 export const signUpSchema=z.object({
