@@ -3,7 +3,6 @@ import { AppError } from "../../errors/AppError";
 import {Unauthorized} from "../../errors/Unauthorized"
 import { BadRequestError } from "../../errors/BadRequestError";
 import { taskData } from "./types";
-import { error } from "console";
 export const addTaskService = async({validatedData,userId}:{validatedData:taskData,userId:string})=>{
     if (!userId) {
         throw new AppError("Unauthorized request", 401);
