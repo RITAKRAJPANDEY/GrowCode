@@ -1,5 +1,9 @@
 export class AppError extends Error{
-    constructor(message,statuscode,errors){
+    public isOperational :boolean;
+    public statuscode :number;
+    public status:"Fail"|"Error";
+    public error:string|null;
+    constructor(message:string,statuscode:number,errors:string|null){
         super(message);
         this.isOperational=true;
         this.statuscode=statuscode;
