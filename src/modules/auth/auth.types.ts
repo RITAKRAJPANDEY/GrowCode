@@ -2,7 +2,7 @@ export interface userRow{
     id:string;
     role:string;
     active:boolean;
-    password?:string;
+    password:string;
     created_at:Date;
     email:string;
     username:string;

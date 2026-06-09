@@ -1,3 +1,4 @@
+import { BadRequestError } from "@/src/errors/BadRequestError";
 import {z} from "zod";
 
 export const signUpSchema=z.object({
@@ -28,7 +29,22 @@ export const refreshTokenSchema=z.object({
     .trim()
     .min(1,{message:"Refresh Token can't be empty"})
     .max(2048,{message:"Too long for refreshtoken"})
-})
+});
+
+ const envValidationSchema = z.object({
+    ACCESS_TOKEN_SECRET:z.string().min(1,{message:"Access Token Is required"}),
+    REFRESHTOKENSECRET:z.string().min(1,{message:"Refresh Token Is Required"}),
+});
+
+const parsedEnv = envValidationSchema.safeParse(process.env);
+
+if(!parsedEnv.success){
+    const errorTree = z.treeifyError(parsedEnv.error);
+    console.error("Invalid token secrets",errorTree);
+    throw new BadRequestError("provide token secrets");
+}
+
+export const tokenEnv = parsedEnv.data;
 
 export type signUpInput = z.infer<typeof signUpSchema>;
 export type logInInput = z.infer<typeof logInSchema>;
