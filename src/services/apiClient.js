@@ -1,12 +1,13 @@
 import axios from "axios";
 
+
 export const apiClient = axios.create({
     baseURL: '/api',
     headers: {
         "Content-Type": "application/json",
     },
     withCredentials: true,
-});
+});// this is the base url on which the axios service would work on 
 
 const getStoredToken = () => {
     if (typeof window === 'undefined') return null;

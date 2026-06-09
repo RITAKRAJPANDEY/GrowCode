@@ -7,7 +7,7 @@ const validateEnvSchema = z.object({
     DB_NAME:z.string().min(1,"Database name is requried"),
     DB_HOST:z.string().min(1,"Database host is requred"),
     DB_PORT:z.coerce.number().default(5432),// coerce forces the string into a number js object (document se nikala )
-    ACCESS_TOKEN_SECRET:z.string().min(1,{message:"Access Token Is required"}),
+    ACCESS_TOKEN_SECRET:z.string().min(1,{message:"Access Token Is Required"}),
     REFRESHTOKENSECRET:z.string().min(1,{message:"Refresh Token Is Required"}),
 });
 

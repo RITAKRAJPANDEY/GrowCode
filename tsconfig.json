@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/components/ActionButton.jsx"  ],
+, "src/components/ActionButton.jsx", "src/services/apiClient.js"  ],
   "exclude": ["node_modules"]
 }
