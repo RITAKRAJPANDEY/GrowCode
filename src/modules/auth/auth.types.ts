@@ -18,6 +18,6 @@ export interface refreshTokenRow {
     expires_at:Date;
 }
 
-export type userAuthDetails = Pick<userRow,'id'|'password'|'created_at'|'active'>;
+export type userAuthDetails = Pick<userRow,'id'|'password'|'created_at'|'active'|'role'|'username'>;
 export type tokenCreateionResult = Pick<refreshTokenRow,'created_at'>;
 export type tokenRevocationionResult = Pick<refreshTokenRow,'revoked_at'>;

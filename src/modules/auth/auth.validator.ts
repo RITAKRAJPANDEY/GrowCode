@@ -5,10 +5,10 @@ export const signUpSchema=z.object({
     .min(3,{message:"username must contain atleast 3 characters"})
     .max(20,{message:"username can not be longer than 20 characters"})
     .trim() ,
-    email:z
-    .email({message:"Invalid email address format"})
+    email:z.string()
     .toLowerCase()
-    .trim(),
+    .trim()
+    .email({message:"Invalid email address format"}),
     password:z.string()
     .min(8,{message:"minimum length 8 characters"}),
     role:z.enum(['user','admin']).default('user'),
@@ -24,7 +24,7 @@ export const logInSchema=z.object({
     role:z.enum(['user','admin']).default('user'),
 });
 export const refreshTokenSchema=z.object({
-    refreshToken:z.string({error:"Refresh Token is Required",message:"Refresh Token Must Be a String"})
+    refreshToken:z.string({message:"Refresh Token Must Be a String"})
     .trim()
     .min(1,{message:"Refresh Token can't be empty"})
     .max(2048,{message:"Too long for refreshtoken"})
