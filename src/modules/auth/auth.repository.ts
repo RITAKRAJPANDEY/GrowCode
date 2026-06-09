@@ -4,15 +4,21 @@ import { pool } from "../../lib/db";
 import { refreshTokenRow, tokenCreateionResult, tokenRevocationionResult, userAuthDetails, userRow } from "./auth.types";
 
 export const addUserRepo = async (username: string, hashed_password: string, hashed_email: string): Promise<Pick<userRow, 'username' | 'created_at'> | null> => {
+
     const result = await pool.query<Pick<userRow, 'username' | 'created_at'>>(`INSERT INTO users(username,password,email) VALUES ($1,$2,$3) RETURNING created_at,username`, [username, hashed_password, hashed_email]);
     return result.rows[0] || null;
+
 }
 export const fetchUserRepo = async (username: string): Promise<userAuthDetails | null> => {
+
     const result = await pool.query<userAuthDetails>(`SELECT id, active , password , created_at FROM users WHERE LOWER(username)=LOWER($1)`, [username]);
+
     return result.rows[0] || null;
 }
 export const storeTokenHashRepo = async (refreshTokenHash: string, user_id: string): Promise<tokenCreateionResult | null> => {
+
     const result = await pool.query<tokenCreateionResult>(`INSERT INTO refreshtoken(user_id,refresh_hash) VALUES ($1,$2) RETURNING created_at `, [user_id, refreshTokenHash]);
+    
     return result.rows[0] || null;
 }
 export const getRefreshTokenRepo = async (refreshTokenHash: string): Promise<Pick<refreshTokenRow, 'is_revoked' | 'user_id' | 'expires_at'> | null> => {

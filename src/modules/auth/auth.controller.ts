@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { logInService, logOutUserService, refreshTokenService, signUpService} from "./auth.service"
 import {  logInSchema, signUpSchema } from "./auth.validator";
 import { errorHandlerMiddleware } from "../../middleware/error.handler.middleware";
-import { cookies } from "next/headers";
 
 
-export const signUpController=async(req)=>{
+
+export const signUpController=async(req:NextRequest):Promise<NextResponse>=>{
     try{
         const rawData = await req.json();
         const validatedData = signUpSchema.parse(rawData);
@@ -17,11 +17,11 @@ export const signUpController=async(req)=>{
     },{
         status:201
     });
-    }catch(err){
+    }catch(err:unknown){
        return errorHandlerMiddleware(err);
     }
 }
-export const loginController = async (req)=>{
+export const loginController = async (req:NextRequest):Promise<NextResponse>=>{
     try{
         const rawData = await req.json();
         const validatedData=logInSchema.parse(rawData);
@@ -42,15 +42,15 @@ export const loginController = async (req)=>{
         });
         return response;
         
-    }catch(err){
+    }catch(err:unknown){
        return errorHandlerMiddleware(err);
     }
 
 }
-export const refreshTokenController = async () => {
+
+export const refreshTokenController = async (req:NextRequest):Promise<NextResponse> => {
     try {
-        const cookieStore = await cookies();
-        const refreshToken = cookieStore.get('refreshToken')?.value;
+        const refreshToken = req.cookies.get('refreshToken')?.value;
 
         if (!refreshToken) {
             return NextResponse.json({
@@ -75,36 +75,37 @@ export const refreshTokenController = async () => {
             maxAge: 60 * 60 * 24 * 32,
         });
         return response;
-    } catch (err) {
+    } catch (err:unknown) {
         return errorHandlerMiddleware(err);
     }
 };
-export const logOutController=async()=>{
+export const logOutController=async(req:NextRequest):Promise<NextResponse>=>{
     try{
-        const cookieStore = await cookies();
-        const refreshToken=cookieStore.get("refreshToken")?.value;
+       
+        const refreshToken=req.cookies.get("refreshToken")?.value;
         if(refreshToken){
             try{
                  await logOutUserService({refreshToken});
             }catch(err){
-                console.error(err);
-                console.warn("Token reocation skipped / failed ");
+                console.error("token revokation failed ",err);
+                
             }
            
         }
-        cookieStore.set("refreshToken","",{
+        
+        const response = NextResponse.json({
+            success: true,
+            message: "logged out successfully"
+        },{status:200});
+        response.cookies.set("refreshToken","",{
             httpOnly:true,
             secure:process.env.NODE_ENV==='production',
             sameSite:'strict',
             path:'/',
             expires:new Date(0)
-        })
-  
-    return NextResponse.json({
-        success: true,
-        message: "logged out successfully"
-    },{status:200});
-    }catch(err){
+        });
+        return response;
+    }catch(err:unknown){
         return errorHandlerMiddleware(err);
     }
 }
