@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { validateAccessToken } from "./modules/auth/auth.util";
 
-export function handlePageRouting(request) {
+export function handlePageRouting(request:NextRequest):NextResponse|null {
     const { pathname } = request.nextUrl;
     const isLoginPage = pathname === '/login';
     const isRootPage = pathname === '/';
@@ -24,7 +24,7 @@ export function handlePageRouting(request) {
     return null; 
 }
 
-export async function handleApiProtection(request) {
+export async function handleApiProtection(request:NextRequest):Promise<NextResponse|null> {
     const { pathname } = request.nextUrl;
 
     
@@ -42,7 +42,7 @@ export async function handleApiProtection(request) {
         const token = authHeader.split(' ')[1];
         try {
             
-            const payload = await validateAccessToken(token);
+            const payload =  validateAccessToken(token);
 
             if(!payload.valid){
                 return NextResponse.json({
@@ -53,14 +53,15 @@ export async function handleApiProtection(request) {
                 },{status:401});
             }
             const requestHeaders = new Headers(request.headers);
-            requestHeaders.set('x-user-id', payload.decoded.sub); 
+           const newPayload = (payload.decoded as  {sub:string}).sub;
+            requestHeaders.set('x-user-id', newPayload); 
             
             return NextResponse.next({
                 request: {
                     headers: requestHeaders,
                 },
             });
-        } catch (err) {
+        } catch (err:unknown) {
 
             console.error('JWT Verification failed:', err);
             return NextResponse.json({
@@ -73,7 +74,7 @@ export async function handleApiProtection(request) {
     return null;
 }
 
-export async function proxy(request) {
+export async function proxy(request:NextRequest):Promise<NextResponse> {
     
     const pageResponse = handlePageRouting(request);
     if (pageResponse) return pageResponse;
