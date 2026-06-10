@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/components/ActionButton.jsx", "src/services/apiClient.ts", "src/services/auth.services.ts", "src/components/Hyperspeed.jsx"  ],
+, "src/components/ActionButton.jsx", "src/services/apiClient.ts", "src/services/auth.services.ts", "src/components/Hyperspeed.jsx", "src/components/yesButton.jsx"  ],
   "exclude": ["node_modules"]
 }
