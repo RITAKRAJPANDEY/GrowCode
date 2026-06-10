@@ -1,13 +1,33 @@
 import {create} from "zustand";
 import { addTaskService } from "./services/task.services";
 import dayjs from "dayjs";
-export const useTaskStore = create((set,get)=>({
+
+interface Task {
+    id:string;
+    date:Date;
+    workout:boolean;
+    commits:number;
+    platform:string|null;
+    dsaq:number;
+    project?:string|null;
+    description?:string|null;
+    other1?:string|null;
+    other2?:string|null;
+}
+
+interface TaskState {
+    tasks:Task[];
+    
+    addTask:(newTaskObject:Task)=>Promise<void>
+
+}
+export const useTaskStore = create<TaskState>((set,get)=>({//generics beach
     tasks:[],
     // clearTask:set(()=>({
     //     tasks:[]
     // })),
 
-    addTask: async (newTaskObject)=>{
+    addTask: async (newTaskObject:Task)=>{
         const previousTask = [...get().tasks] ;
         const todayTaskDate = dayjs(newTaskObject.date).format('YYYY/MM/DD');
         const dayTaskAlreadyExist = previousTask.some((task)=>dayjs(task.date).format('YYYY/MM/DD')===todayTaskDate);
@@ -32,7 +52,7 @@ export const useTaskStore = create((set,get)=>({
              ?{...task,id:savedTask.id}:task)
             }))
 
-        }catch(err){
+        }catch(err:unknown){
             console.error("unable to add task in db reverting ui")
             set({tasks:previousTask});
             throw err;
