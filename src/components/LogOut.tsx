@@ -4,14 +4,14 @@
 import { useRouter } from "next/navigation";
 import { fLogOutService } from "../services/auth.services";
 import Link from "next/link";
-export default function LogOUt() {
+export default function LogOut() {
     const router = useRouter();
 const handleLogOut=async()=>{
     try{
             await fLogOutService();
             router.push("/login")
             
-    }catch(err){
+    }catch(err:unknown){
         console.error(err);
     }
 

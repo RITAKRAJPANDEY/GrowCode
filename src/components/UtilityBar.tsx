@@ -11,9 +11,9 @@ export default function UtilityBar() {
                 <h1 className="text-2xl text-[#f1f5f9]  px-2">
                     Tasks</h1>
             </div>
-            {tasks.map((tasks)=>(
-                 <div key={tasks.date} className="text-[#f1f5f9] flex flex-col gap-2 bg-[#1e293b] px-2">
-                    <h1 className="rounded-md ">{dayjs(tasks.date).format('dddd, MMMM D')}</h1>              
+            {tasks.map((task)=>(//React can't use date as a key give either a string or an id number
+                 <div key={task.date.toISOString()} className="text-[#f1f5f9] flex flex-col gap-2 bg-[#1e293b] px-2">
+                    <h1 className="rounded-md ">{dayjs(task.date).format('dddd, MMMM D')}</h1>              
             </div>
             ))}
         </div>
