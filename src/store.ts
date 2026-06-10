@@ -3,7 +3,7 @@ import { addTaskService } from "./services/task.services";
 import dayjs from "dayjs";
 
 interface Task {
-    id:string;
+    id?:string;
     date:Date;
     workout:boolean;
     commits:number;

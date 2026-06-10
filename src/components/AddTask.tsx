@@ -1,32 +1,46 @@
 'use client';
 
 import { useState } from 'react';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import Switch from "./yesButton";
 import { useEffect } from 'react';
 import {useTaskStore} from "../store";
 
+
+interface TaskData{
+    id?:string;
+    date:Date;
+    workout:boolean;
+    commits:number;
+    platform:string|null;
+    dsaq:number;
+    project?:string|null;
+    description?:string|null;
+    other1?:string|null;
+    other2?:string|null;
+}
+
 export default function AddTasks() {
-    const [date, setDate] = useState(null);
-    const [workout, setWorkout] = useState(true);
-    const [commits, setCommits] = useState("");
-    const [platform, setPlatform] = useState("");
-    const [dsaq, setDsaq] = useState("");
-    const [project, setProject] = useState("");
-    const [description, setDescription] = useState("");
-    const [other1, setOther1] = useState("");
-    const [other2, setOther2] = useState("");
+    const [date, setDate] = useState<Dayjs|null>(null);
+    const [workout, setWorkout] = useState<boolean>(true);
+    const [commits, setCommits] = useState<string>(" ");
+    const [platform, setPlatform] = useState<string>("cf");
+    const [dsaq, setDsaq] = useState<string>(" ");
+    const [project, setProject] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+    const [other1, setOther1] = useState<string>("");
+    const [other2, setOther2] = useState<string>("");
     const addTask = useTaskStore((state)=>state.addTask);
     useEffect(() => {
         //eslint-disable-next-line
         setDate(dayjs());
     }, []);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e:React.SubmitEvent) => {
         e.preventDefault();
         try {
-            const Task = {
-                date: date ? date.toISOString() : new Date().toISOString(),
+            const Task:TaskData = {
+                date: date ? date.toDate() : new Date(),
                 workout: workout,
                 commits: commits ? Number(commits) : 0,
                 platform: platform,
