@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from "next/navigation";
-import Button from "../components/Button"
+import Button from "./Button"
 export default function Hero() {
     const router = useRouter();
    return (

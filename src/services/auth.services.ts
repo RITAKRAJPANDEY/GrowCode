@@ -4,10 +4,9 @@
 
 import { apiClient } from "./apiClient";
 
-interface LoginData {
-    success:boolean;
-    created_at:Date;
-    id:string;
+interface LoginRequestData {
+   username:string;
+   password:string;
 }
 
 
@@ -31,7 +30,7 @@ interface AuthResponseData {
     message?:string;
 }
 
-export const fLoginService=async(data:LoginData):Promise<AuthResponseData>=>{
+export const fLoginService=async(data:LoginRequestData):Promise<AuthResponseData>=>{
     // const res = await fetch('/api/auth/login',{
     //     method:"POST",
     //     headers:{

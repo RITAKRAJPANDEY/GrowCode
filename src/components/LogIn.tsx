@@ -1,17 +1,24 @@
 'use client';
 import { useState } from "react"
-import LoginButton from "../components/LoginButton"
+import LoginButton from "./LoginButton"
 import { useEffect } from "react";
 import { fLoginService } from "../services/auth.services";
 import { useRouter } from "next/navigation";
-import ActionButton from "../components/ActionButton"
+import ActionButton from "./ActionButton"
+interface Credentials {
+    password:string;
+    username:string;
+    created_at?:Date;
+    id?:string;
+    success?:boolean;
+}
 export default function LogIn() {
     const router = useRouter();
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [message, setMessage] = useState("");
-    const [isSuccess, setIsSuccess] = useState(true);
-    const [showPassword, setShowPassword] = useState(false);
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
+    const [isSuccess, setIsSuccess] = useState<boolean>(true);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     useEffect(() => {
         if (!message) {
             return;
@@ -22,7 +29,7 @@ export default function LogIn() {
         return () => clearTimeout(timer);
 
     }, [message]);
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e:React.SubmitEvent) => {
         e.preventDefault();
         if (!username && !password) {
             setMessage("Enter Username and Password");
@@ -40,9 +47,10 @@ export default function LogIn() {
             return;
         }
         try {
-            const credentials = {
+            const credentials:Credentials = {
                 username: username,
-                password: password
+                password: password,
+               
             }
             await fLoginService(credentials);
             router.push('/');
@@ -51,10 +59,10 @@ export default function LogIn() {
 
             setIsSuccess(true);
 
-        } catch (err) {
+        } catch (err:unknown) {
             setIsSuccess(false);
             console.error(err);
-            setMessage(err.message || "something went wrong");
+            setMessage((err as {message:string}).message || "something went wrong");
         }
 
     }
