@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_USER=rpsfv
+      - DB_HOST=db
+      - DB_NAME=growcode
+      - DB_PORT=5432
+      - DB_PASSWORD=postgres123
+      - SALT_ROUNDS=12
+      - ACCESS_TOKEN_SECRET=3984739280ur2398fy34298f34298fy23e9r832yfe989yeyf2e98fy2e98fy 
+      - REFRESHTOKENSECRET=rfgg2837fty23e0879fn23e987fgh23e08f7e2ghhfeb0e827fhbe2870fb8498ty4930850984389ty089
+      - PGPOOL_MAX=10
+      - PGPOOL_TIMEOUT=30000
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=rpsfv
+      - POSTGRES_PASSWORD=postgres123
+      - POSTGRES_DB=growcode
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U rpsfv -d growcode"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  pgdata:
+    
