@@ -29,6 +29,18 @@ CREATE UNIQUE INDEX idx_user_username ON users(username);
 CREATE UNIQUE INDEX idx_lower_user_username ON users(LOWER(username));
 
 
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+
+INSERT INTO users (id, role, email, username, password) 
+VALUES (
+    'fe143647-3199-4e3e-9ac7-a1a44fef5f0f',             
+    'admin',                                            
+    'admin@growcode.com',                               
+    'password',                                            
+    crypt('username', gen_salt('bf', 12))   
+) 
+ON CONFLICT (username) DO NOTHING;
 
 
 
