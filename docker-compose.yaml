@@ -16,9 +16,6 @@ services:
       - REFRESHTOKENSECRET=rfgg2837fty23e0879fn23e987fgh23e08f7e2ghhfeb0e827fhbe2870fb8498ty4930850984389ty089
       - PGPOOL_MAX=10
       - PGPOOL_TIMEOUT=30000
-    volumes:
-      - .:/app
-      - /app/node_modules
     depends_on:
       db:
         condition: service_healthy
@@ -40,4 +37,3 @@ services:
       retries: 5
 volumes:
   pgdata:
-    

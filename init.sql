@@ -20,6 +20,7 @@ CREATE TABLE users(
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+
 --users table constraints and indexes
 
 --if not using generilization
