@@ -27,8 +27,9 @@ export function handlePageRouting(request:NextRequest):NextResponse|null {
 export async function handleApiProtection(request:NextRequest):Promise<NextResponse|null> {
     const { pathname } = request.nextUrl;
 
-    
-    if (pathname.startsWith('/api/task')) {
+    const isTaskRoute = pathname === '/api/task' || pathname.startsWith('/api/task/');
+
+    if (isTaskRoute) {
         const authHeader = request.headers.get('authorization');
         
        
@@ -87,6 +88,6 @@ export async function proxy(request:NextRequest):Promise<NextResponse> {
 }
 
 export const config = {
-    matcher: ['/', '/login','/task']
+    matcher: ['/', '/login', '/api/task', '/api/task/:path*']
 }
 //'/api/task'

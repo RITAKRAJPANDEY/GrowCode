@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios from "axios";
 import { apiClient } from "./apiClient";
 
 interface CreateTaskPayload {
@@ -22,7 +22,7 @@ interface GetTaskRowData {
     other1: string | null;
     other2: string | null;
     created_at: string; 
-    id: string;
+    
 }
 
 interface AddTaskResponse {
@@ -59,10 +59,10 @@ export const addTaskService = async (taskData: CreateTaskPayload): Promise<AddTa
 };
 
 
-export const getTaskService = async (): Promise<GetTaskRowData[]> => { 
+export const getTaskService = async (date:string): Promise<GetTaskRowData> => { 
     try {
-        const res = await apiClient.get<GetTaskRowData[]>('/task/');
-        return res.data;
+        const res = await apiClient.get<{ success: boolean; task: GetTaskRowData }>(`/task/${date}`);
+        return res.data.task;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
             console.error(

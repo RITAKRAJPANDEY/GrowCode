@@ -57,6 +57,8 @@ export const useTaskStore = create<TaskState>((set,get)=>({//generics beach
             set({tasks:previousTask});
             throw err;
         }
+    },
+    fetchTaskByDate:async()=>{
+        
     }
-   
 }));
