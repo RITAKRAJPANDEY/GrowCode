@@ -29,7 +29,6 @@ export const taskValidatorSchema = z.object({
 });
 
 export const getTaskValidatorSchema = z.object({
-    date:z.coerce
-    .date({message:"Invalid date ISO"})
-    
+    date:z.coerce.date()
+    // .date({message:"Invalid date ISO"})
 })

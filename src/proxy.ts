@@ -87,5 +87,6 @@ export async function proxy(request:NextRequest):Promise<NextResponse> {
 }
 
 export const config = {
-    matcher: ['/', '/login', '/api/task']
+    matcher: ['/', '/login','/task']
 }
+//'/api/task'

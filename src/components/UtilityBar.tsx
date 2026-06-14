@@ -3,6 +3,7 @@ import { useTaskStore } from "../store";
 import dayjs from 'dayjs';
 export default function UtilityBar() {
     const tasks=useTaskStore((state)=>state.tasks);
+    
     return (
         <div className="fixed top-0 right-0 flex flex-col w-64 h-screen p-4 gap-10 bg-[#020617] text-[#f1f5f9]">
 
