@@ -2,7 +2,8 @@ import { addTaskRepo, getTaskRepo } from "./task.repository";
 import { AppError } from "../../errors/AppError";
 import {Unauthorized} from "../../errors/Unauthorized"
 import { BadRequestError } from "../../errors/BadRequestError";
-import { taskData } from "./types";
+import {  taskData } from "./types";
+import { QueryParams } from "./task.validator";
 export const addTaskService = async({validatedData,userId}:{validatedData:taskData,userId:string})=>{
     if (!userId) {
         throw new AppError("Unauthorized request", 401);
@@ -27,4 +28,11 @@ export const getTaskService = async({validatedData,userId}:{validatedData:Date,u
         throw new BadRequestError("No Task Found for this date",);
     }
     return {task:task};
+}
+
+export const allTaskDataService=async (seachParams:QueryParams,userId:string)=>{
+if(!userId){
+    throw new Unauthorized()
+}
+
 }

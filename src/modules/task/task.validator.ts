@@ -32,3 +32,9 @@ export const getTaskValidatorSchema = z.object({
     date:z.coerce.date()
     // .date({message:"Invalid date ISO"})
 })
+export const queryValidationSchema = z.object({
+    fromDate:z.string().trim().max(100).nullish(),
+    toDate:z.string().trim().max(100).nullish(),
+    userIds:z.array(z.string().trim().max(100)).optional(),
+});
+export type QueryParams = z.infer<typeof queryValidationSchema>
