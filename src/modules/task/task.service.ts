@@ -42,8 +42,6 @@ if(searchParams.toDate && searchParams.fromDate){
     }
 }
 const data = await dynamicTaskQueryRepo(searchParams);
-if(!data){
-    throw new BadRequestError("no task for this search")
-}
+
 return data;
 }

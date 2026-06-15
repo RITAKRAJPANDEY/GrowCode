@@ -1,4 +1,3 @@
-import { AppError } from "@/src/errors/AppError";
 import { pool } from "../../lib/db"
 import { QueryParams } from "./task.validator";
 import { taskData } from "./types";
@@ -77,8 +76,9 @@ export const dynamicTaskQueryRepo = async (searchParam: QueryParams) => {
         query += ` AND ${conditions.join(' AND ')}`;
     }
     query += ` ORDER BY created_at ${currentOrder} LIMIT $${index++}`;
+    console.error(searchParam.limit)
     if(!searchParam.limit){
-        throw new AppError("Limit can't be null",400)
+        searchParam.limit=5;
     }
     values.push(searchParam.limit + 1 );
     const result = await pool.query(query, values);

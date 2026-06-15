@@ -37,8 +37,8 @@ const MAX_LIMIT = 10;
 const MIN_LIMIT = 5;
 
 export const queryValidationSchema = z.object({
-    fromDate:z.iso.datetime().optional().transform((val)=>(val ? new Date(val) :undefined)),
-    toDate:z.iso.datetime().optional().transform((val)=>(val?new Date(val):undefined)),
+    fromDate:z.iso.datetime().optional().nullish().transform((val)=>(val ? new Date(val) :undefined)),
+    toDate:z.iso.datetime().optional().nullish().transform((val)=>(val?new Date(val):undefined)),
     userIds:z.array(z.string().trim().max(100)).optional().transform((val )=>val && val.length>0 ?val:undefined),
     limit:z.coerce.number().catch(MIN_LIMIT).transform((val)=>{
         if(val>MAX_LIMIT)return MAX_LIMIT;
