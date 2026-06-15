@@ -1,4 +1,4 @@
-import { addTaskRepo, getTaskRepo } from "./task.repository";
+import { addTaskRepo, dynamicTaskQueryRepo, getTaskRepo } from "./task.repository";
 import { AppError } from "../../errors/AppError";
 import {Unauthorized} from "../../errors/Unauthorized"
 import { BadRequestError } from "../../errors/BadRequestError";
@@ -30,9 +30,20 @@ export const getTaskService = async({validatedData,userId}:{validatedData:Date,u
     return {task:task};
 }
 
-export const allTaskDataService=async (seachParams:QueryParams,userId:string)=>{
+export const allTaskDataService=async (searchParams:QueryParams,userId:string)=>{
+
 if(!userId){
     throw new Unauthorized()
 }
+if(searchParams.toDate && searchParams.fromDate){
 
+    if((( searchParams.fromDate)>(searchParams.toDate))){
+        throw new BadRequestError("from cannot be greater than to")
+    }
+}
+const data = await dynamicTaskQueryRepo(searchParams);
+if(!data){
+    throw new BadRequestError("no task for this search")
+}
+return data;
 }
