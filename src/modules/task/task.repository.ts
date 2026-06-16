@@ -56,7 +56,18 @@ export const dynamicTaskQueryRepo = async (searchParam:QueryParams) => {
     const conditions: string[] = [];
     let index = 2;
 
-    let query = `SELECT * FROM tasks WHERE user_id = ANY($1)`
+    let query = `SELECT id, 
+    user_id, 
+    workout, 
+    commits, 
+    dsaq, 
+    platform, 
+    project, 
+    description, 
+    other1, 
+    other2, 
+    created_at, 
+    date::TEXT AS date FROM tasks WHERE user_id = ANY($1)`
 
     if (searchParam.fromDate && searchParam.toDate) {
         conditions.push(`created_at>=$${index++}::timestamptz AND created_at<=$${index++}::timestamptz`)

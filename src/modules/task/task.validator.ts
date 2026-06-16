@@ -41,8 +41,9 @@ export const queryValidationSchema = z.object({
     toDate:z.iso.datetime().optional().nullish().transform((val)=>(val?new Date(val):undefined)),
     userIds:z.array(z.string().trim().max(100)).optional().transform((val )=>val && val.length>0 ?val:undefined),
     limit:z.coerce.number().catch(MIN_LIMIT).transform((val)=>{
-        if(val>MAX_LIMIT)return MAX_LIMIT;
-        if(val<MIN_LIMIT)return MIN_LIMIT;
+        if(val > MAX_LIMIT) return MAX_LIMIT;
+        if(val < MIN_LIMIT) return MIN_LIMIT;
+        return val;
     }),
     cursor:z.string().trim().nullish(),
     direction:z.enum(['next','prev']).default('next').nullish(),

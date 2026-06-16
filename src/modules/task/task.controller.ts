@@ -1,7 +1,7 @@
 import { NextResponse,NextRequest } from "next/server";
 import { errorHandlerMiddleware } from "../../middleware/error.handler.middleware";
 import { addTaskService, allTaskDataService, getTaskService } from "./task.service";
-import { getTaskValidatorSchema, QueryParams, queryValidationSchema, taskValidatorSchema } from "./task.validator";
+import { getTaskValidatorSchema, queryValidationSchema, taskValidatorSchema } from "./task.validator";
 
 export const addTaskController=async(req:NextRequest):Promise<NextResponse>=>{
     try{
