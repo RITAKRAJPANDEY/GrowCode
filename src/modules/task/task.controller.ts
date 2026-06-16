@@ -43,7 +43,7 @@ try{
     const toDate = searchParams.get('to');
     const userIds = searchParams.getAll('user_id');
     const limit = searchParams.get('limit');
-    const cursor= searchParams.get('cursor');
+    const cursor = searchParams.get('cursor');
     const direction = searchParams.get('direction')
     const rawQueryParams = {
         fromDate: fromDate,

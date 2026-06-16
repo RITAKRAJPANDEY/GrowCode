@@ -4,6 +4,8 @@ import {Unauthorized} from "../../errors/Unauthorized"
 import { BadRequestError } from "../../errors/BadRequestError";
 import {  taskData } from "./types";
 import { QueryParams } from "./task.validator";
+import { encodeCursorUtil } from "./task.utils";
+import { da } from "zod/v4/locales";
 export const addTaskService = async({validatedData,userId}:{validatedData:taskData,userId:string})=>{
     if (!userId) {
         throw new AppError("Unauthorized request", 401);
@@ -41,7 +43,29 @@ if(searchParams.toDate && searchParams.fromDate){
         throw new BadRequestError("from cannot be greater than to")
     }
 }
-const data = await dynamicTaskQueryRepo(searchParams);
+const {data,hasMore} = await dynamicTaskQueryRepo(searchParams);
+    let nextCursor:string|null=null;
+    let prevCursor:string|null=null;
 
-return data;
+    
+    if(searchParams.direction==='next'||!searchParams.direction){
+        if(hasMore&&data.length>0){
+            const lastItem = data[data.length-1]
+            nextCursor=encodeCursorUtil({created_at:lastItem.created_at,id:lastItem.id});
+        }
+        if(searchParams.cursor&&data.length>0){
+            prevCursor = encodeCursorUtil({created_at:data[0].created_at,id:data[0].id})
+        }
+    }else if(searchParams.direction==='prev'){
+        if(hasMore&&data.length>0){
+            const oldItemInAscScan = data[data.length-1];
+            prevCursor = encodeCursorUtil({created_at:oldItemInAscScan.created_at,id:oldItemInAscScan.id});
+        }
+        if(data.length>0){
+            const newItemInAscScan = data[0];
+            nextCursor = encodeCursorUtil({created_at:newItemInAscScan.created_at,id:newItemInAscScan.id});
+        }
+        data.reverse();
+    }
+return {tasks:data,prevCursor:prevCursor,nextCursor:nextCursor};
 }

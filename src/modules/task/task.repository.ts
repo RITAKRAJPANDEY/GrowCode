@@ -1,4 +1,5 @@
 import { pool } from "../../lib/db"
+import { decodeCursorUtil } from "./task.utils";
 import { QueryParams } from "./task.validator";
 import { taskData } from "./types";
 
@@ -49,46 +50,59 @@ export const getTaskRepo = async (date: Date, userId: string) => {
     const result = await pool.query<getTaskRowData>(`SELECT workout,commits,dsaq,platform,project,description,other1,other2,created_at FROM tasks WHERE user_id = $1 AND date = $2`, [userId, date]);
     return result.rows[0] || null;
 }
-export const dynamicTaskQueryRepo = async (searchParam: QueryParams) => {
+export const dynamicTaskQueryRepo = async (searchParam:QueryParams) => {
 
     const values: unknown[] = [searchParam.userIds ?? []];
     const conditions: string[] = [];
     let index = 2;
+
     let query = `SELECT * FROM tasks WHERE user_id = ANY($1)`
 
     if (searchParam.fromDate && searchParam.toDate) {
         conditions.push(`created_at>=$${index++}::timestamptz AND created_at<=$${index++}::timestamptz`)
         values.push(searchParam.fromDate, searchParam.toDate)
     }
+
     let currentOrder = 'DESC';
+
+
     if (searchParam.cursor) {
-        const cursorDate = new Date(searchParam.cursor);
+        const { created_at, id } = decodeCursorUtil(searchParam.cursor);
+
         if (searchParam.direction === 'next') {
-            conditions.push(`created_at<$${index++}::timestamptz`);
-            values.push(cursorDate);
+            conditions.push(`(created_at,id)<($${index++}::timestamptz,$${index++})`);
+            values.push(created_at, id);
         } else if (searchParam.direction === 'prev') {
-            conditions.push(`created_at>$${index++}::timestamptz`);
-            values.push(cursorDate);
+            conditions.push(`(created_at,id)>($${index++}::timestamptz,$${index++})`);
+            values.push(created_at, id);
             currentOrder = 'ASC';
         }
     }
+
     if (conditions.length > 0) {
         query += ` AND ${conditions.join(' AND ')}`;
     }
+
     query += ` ORDER BY created_at ${currentOrder} LIMIT $${index++}`;
-    console.error(searchParam.limit)
-    if(!searchParam.limit){
-        searchParam.limit=5;
-    }
-    values.push(searchParam.limit + 1 );
+
+    console.error(searchParam.limit);
+
+    const limitVal = searchParam.limit??5;
+
+    values.push(limitVal + 1);
+
     const result = await pool.query(query, values);
+
     let row = result.rows;
-    const hasMore = result.rows.length > searchParam.limit;
-    if(hasMore){
-       row = result.rows.slice(0,searchParam.limit);
+
+    const hasMore = result.rows.length > limitVal;
+
+    if (hasMore) {
+       
+        row = result.rows.slice(0, limitVal);
     }
-    if (searchParam.direction === 'prev') {
-        return row.reverse();
-    }
-    return row
+
+   
+
+    return { data: row, hasMore: hasMore };
 }
