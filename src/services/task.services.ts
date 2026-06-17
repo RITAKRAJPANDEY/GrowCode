@@ -1,5 +1,6 @@
 import axios from "axios";
 import { apiClient } from "./apiClient";
+import { SearchParams } from "next/dist/server/request/search-params";
 
 interface CreateTaskPayload {
     workout: boolean;
@@ -59,7 +60,7 @@ export const addTaskService = async (taskData: CreateTaskPayload): Promise<AddTa
 };
 
 
-export const getTaskService = async (date:string): Promise<GetTaskRowData> => { 
+export const getTaskByDateService = async (date:string): Promise<GetTaskRowData> => { 
     try {
         const res = await apiClient.get<{ success: boolean; task: GetTaskRowData }>(`/task/${date}`);
         return res.data.task;
@@ -77,3 +78,29 @@ export const getTaskService = async (date:string): Promise<GetTaskRowData> => {
         throw err;
     }
 };
+    interface config{
+        userIds?:string[];
+        cursor?:string|null;
+        direction?:'next'|'prev';
+        limit?:number;
+        fromDate?:string;
+        toDate?:string;
+    }
+
+export const fetchTasks = async(config:config)=>{
+    try{
+        const url = new URL('/api/tasks',window.location.origin)
+        if(config.userIds && config.userIds.length){
+            config.userIds.forEach(id =>url.searchParams.append('user_id',id));
+        }
+        if(config.limit){url.searchParams.set('limit',config.limit.toString());}
+        if(config.cursor){url.searchParams.set('cursor',config.cursor);}
+        if(config.direction){url.searchParams.set('direction',config.direction);}
+        if(config.fromDate){url.searchParams.set('fromDate',config.fromDate)}
+        if(config.toDate){url.searchParams.set('toDate',config.toDate)}
+        const res = await apiClient.get(url.toString());
+        return res
+    }catch(err:unknown){
+        throw err;
+    }
+}

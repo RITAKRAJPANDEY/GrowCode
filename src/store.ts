@@ -58,7 +58,13 @@ export const useTaskStore = create<TaskState>((set,get)=>({//generics beach
             throw err;
         }
     },
-    fetchTaskByDate:async()=>{
-        
+    getTaskByDate:async()=>{
+        const previousTask =[...get().tasks];
+        try{
+            //fetch a servicewhich gives youall tasks for the particular user
+            
+        }catch(err:unknown){
+
+        }
     }
 }));

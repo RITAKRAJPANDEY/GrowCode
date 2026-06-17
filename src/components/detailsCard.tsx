@@ -1,7 +1,7 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { getTaskService } from '../services/task.services';
+import { getTaskByDateService } from '../services/task.services';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -33,7 +33,7 @@ export default function Details() {
         const taskDetails = async () => {
             try {
                 setLoading(true);
-                const task = await getTaskService(formattedDateForBackend);
+                const task = await getTaskByDateService(formattedDateForBackend);
                 setData(task);
             } catch (err: unknown) {
                 console.error("Failed to resolve task matrix details:", err);

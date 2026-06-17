@@ -45,20 +45,23 @@ try{
     const limit = searchParams.get('limit');
     const cursor = searchParams.get('cursor');
     const direction = searchParams.get('direction')
+    const userId=req.headers.get('x-user-id')||"";
+    const finalUserId = userIds.length>0?userIds:[userId];
     const rawQueryParams = {
         fromDate: fromDate,
         toDate: toDate,
         limit:limit,
-        userIds: userIds,
+        userIds:finalUserId,
         cursor:cursor,
         direction:direction,
     }
     const validatedQueryParams = queryValidationSchema.parse(rawQueryParams);
-    const userId=req.headers.get('x-user-id')||"";
+   
     const data = await allTaskDataService(validatedQueryParams,userId)
     return NextResponse.json({
         success:true,
-        data:data
+        tasks:data.tasks,
+        cursor:{nextCursor:data.nextCursor,prevCursor:data.prevCursor}
     })
 }catch(err:unknown){
     return errorHandlerMiddleware(err)
