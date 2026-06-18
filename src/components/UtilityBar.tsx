@@ -17,7 +17,7 @@ export default function UtilityBar() {
     loadInitialData()
     },[fetchTasksByDate])
     return (
-        <div className="fixed top-0 right-0 flex flex-col w-64 h-screen p-4 gap-10 bg-[#020617] text-[#f1f5f9]">
+        <div className="fixed top-0 right-0 flex flex-col w-64 h-screen p-4 gap-10 bg-[#020617] ]">
 
 
             <div className="bg-[#020617] rounded-md">
@@ -25,9 +25,9 @@ export default function UtilityBar() {
                     Tasks</h1>
             </div>
             {tasks.map((task)=>(//React can't use date as a key give either a string or an id number
-                 <div key={task.id} className="text-[#f1f5f9] flex flex-col gap-2  px-2">
-                    <h1 className="rounded rounded-md  "></h1>
-                    <Link href={`/task/details/${task.date}`}>{dayjs(task.date).format('dddd, MMMM D')}</Link>              
+                 <div key={task.id} className={`text-[#f1f5f9] flex flex-col ${dayjs(task.date).format('dddd, MMMM D')===dayjs().format('dddd, MMMM D')?"bg-orange-950/10":"bg-[#0f172a]"}  gap-2 rounded-md px-2`}>
+                   
+                   <Link className={` hover:scale-98 ${dayjs(task.date).format('dddd, MMMM D')===dayjs().format('dddd, MMMM D')?"text-green-300":"text-orange-300"}`} href={`/task/details/${task.date}`}>{dayjs(task.date).format('dddd, MMMM D')}</Link>             
             </div>
             ))}
         </div>
