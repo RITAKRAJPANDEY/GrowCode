@@ -1,8 +1,10 @@
 'use client';
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+    const pathname = usePathname();
     return (
         <div className="fixed top-0 left-0 flex flex-col w-64 h-screen p-4 gap-10 bg-[#020617] text-[#f1f5f9]">
 
@@ -17,13 +19,13 @@ export default function Navbar() {
             <div className="flex flex-col gap-4">
                 <Link
                     href="/addtask"
-                    className="flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all text-slate-400"
+                    className={` ${pathname==="/addtask"?"text-green-300 ":"text-slate-400"} flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all `}
                 >
                     Add Task
                 </Link>
                 <Link
                     href="/"
-                    className="flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all text-slate-400"
+                     className={` ${pathname==="/addfeedback"?"text-green-300 ":"text-slate-400"} flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all `}
                 >
                     Add Feedback
                 </Link>
@@ -35,9 +37,9 @@ export default function Navbar() {
                     <h2 className="py-1 px-2 text-sm font-semibold uppercase tracking-wider text-[#34d399] bg-[#0f172a]/30 rounded">
                         Chat
                     </h2>
-                    <Link href="/" className="flex py-1.5 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-lg hover:text-white text-slate-400">Group</Link>
-                    <Link href="/" className="flex py-1.5 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-lg hover:text-white text-slate-400">Konda</Link>
-                    <Link href="/" className="flex py-1.5 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-lg hover:text-white text-slate-400">Shivam</Link>
+                    <Link href="/" className={` ${pathname==="/group"?"text-green-300 ":"text-slate-400"} flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all `}>Group</Link>
+                    <Link href="/" className="flex py-1.5 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-lg hover:text-white text-slate-400">user1</Link>
+                    <Link href="/" className="flex py-1.5 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-lg hover:text-white text-slate-400">user2</Link>
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -54,7 +56,7 @@ export default function Navbar() {
               
                 <Link
                     href="/logout"
-                    className="flex py-2 justify-center rounded-md w-full text-slate-400 hover:text-red-400 hover:bg-red-950/20 transition-colors">Log Out</Link>
+                     className={` ${pathname==="/logout"?"text-red-300 ":"text-slate-400"} flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all `}>Log Out</Link>
             </div>
 
         </div>
