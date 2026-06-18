@@ -1,6 +1,5 @@
 import axios from "axios";
 import { apiClient } from "./apiClient";
-import { SearchParams } from "next/dist/server/request/search-params";
 
 interface CreateTaskPayload {
     workout: boolean;
@@ -22,8 +21,8 @@ interface GetTaskRowData {
     description: string | null;
     other1: string | null;
     other2: string | null;
-    created_at: string; 
-    
+    created_at: string;
+
 }
 
 interface AddTaskResponse {
@@ -39,68 +38,69 @@ export const addTaskService = async (taskData: CreateTaskPayload): Promise<AddTa
         const res = await apiClient.post<AddTaskResponse>('/task/', taskData);
         return res.data;
     } catch (err: unknown) {
-        
+
         if (axios.isAxiosError(err)) {
             console.error(
-                'fAdd Task Service Error:', 
-                err.response?.status || "Network Error", 
+                'fAdd Task Service Error:',
+                err.response?.status || "Network Error",
                 err.response?.data || err.message
             );
-            
-           
+
+
             const serverMessage = (err.response?.data as { message?: string })?.message;
             if (serverMessage) {
                 throw new Error(serverMessage);
             }
         }
-        
-      
+
+
         throw err;
     }
 };
 
 
-export const getTaskByDateService = async (date:string): Promise<GetTaskRowData> => { 
+export const getTaskByDateService = async (date: string): Promise<GetTaskRowData> => {
     try {
         const res = await apiClient.get<{ success: boolean; task: GetTaskRowData }>(`/task/${date}`);
         return res.data.task;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
             console.error(
-                "fGetTaskService Error:", 
-                err.response?.status || "Network error", 
+                "fGetTaskService Error:",
+                err.response?.status || "Network error",
                 err.response?.data || err.message
             );
-            
+
             const serverMessage = (err.response?.data as { message?: string })?.message;
             if (serverMessage) throw new Error(serverMessage);
         }
         throw err;
     }
 };
-    interface config{
-        userIds?:string[];
-        cursor?:string|null;
-        direction?:'next'|'prev';
-        limit?:number;
-        fromDate?:string;
-        toDate?:string;
-    }
 
-export const fetchTasks = async(config:config)=>{
-    try{
-        const url = new URL('/api/tasks',window.location.origin)
-        if(config.userIds && config.userIds.length){
-            config.userIds.forEach(id =>url.searchParams.append('user_id',id));
+interface config {
+    userIds?: string[];
+    cursor?: string | null;
+    direction?: 'next' | 'prev';
+    limit?: number;
+    fromDate?: string;
+    toDate?: string;
+}
+
+export const fetchTasks = async (config: config) => {
+    try {
+        const url = new URL('/api/task', window.location.origin)
+        if (config.userIds && config.userIds.length>0) {
+            config.userIds.forEach(id => url.searchParams.append('user_id', id));
         }
-        if(config.limit){url.searchParams.set('limit',config.limit.toString());}
-        if(config.cursor){url.searchParams.set('cursor',config.cursor);}
-        if(config.direction){url.searchParams.set('direction',config.direction);}
-        if(config.fromDate){url.searchParams.set('fromDate',config.fromDate)}
-        if(config.toDate){url.searchParams.set('toDate',config.toDate)}
+        if (config.limit) { url.searchParams.set('limit', config.limit.toString()); }
+        if (config.cursor) { url.searchParams.set('cursor', config.cursor); }
+        if (config.direction) { url.searchParams.set('direction', config.direction); }
+        if (config.fromDate) { url.searchParams.set('fromDate', config.fromDate) }
+        if (config.toDate) { url.searchParams.set('toDate', config.toDate) }
         const res = await apiClient.get(url.toString());
         return res
-    }catch(err:unknown){
+    } catch (err: unknown) {
         throw err;
     }
 }
