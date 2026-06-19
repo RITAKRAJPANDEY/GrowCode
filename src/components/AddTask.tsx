@@ -67,7 +67,7 @@ export default function AddTasks() {
     }
     return (
         <div className="flex min-h-screen flex-col justify-center items-center bg-[#0f172a] p-4">
-            <div className="w-full p-6 border border-[#f59e0b] shadow-md rounded-md max-w-xl  text-white">
+            <div className="w-full bg-[#0b101c]   p-6 border border-[#f59e0b] shadow-md rounded-md max-w-xl  text-white">
                 <div className="flex flex-col gap-6">
                     <h1 className="text-4xl font-semibold">Add Tasks</h1>
 

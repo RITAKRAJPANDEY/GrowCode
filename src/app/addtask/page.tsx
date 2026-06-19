@@ -1,4 +1,5 @@
 'use client';
+import { DynamicColorSlider } from "@/src/components/slider";
 import AddTasks from "../../components/AddTask";
 import Navbar from "../../components/NavBar";
 import UtilityBar from "../../components/UtilityBar";
@@ -9,6 +10,7 @@ export default function Task(){
         </div>
         <div className="flex-1 min-w-0 overflow-y-auto">
             <AddTasks/>
+            <DynamicColorSlider/>
         </div>
         <div className="flex-none">
             <UtilityBar/>
