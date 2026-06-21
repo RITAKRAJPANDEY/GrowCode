@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import dayjs from "dayjs";
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -24,8 +25,8 @@ export default function Navbar() {
                     Add Task
                 </Link>
                 <Link
-                    href="/"
-                     className={` ${pathname==="/addfeedback"?"text-green-300 ":"text-slate-400"} flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all `}
+                    href={`/feedback/${dayjs().format('YYYY-MM-DD')}`}
+                     className={` ${pathname===`/task/details/${dayjs().format('YYYY-MM-DD')}`?"text-green-300 ":"text-slate-400"} flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all `}
                 >
                     Add Feedback
                 </Link>

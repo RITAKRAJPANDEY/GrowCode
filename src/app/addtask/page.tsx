@@ -10,7 +10,6 @@ export default function Task(){
         </div>
         <div className="flex-1 min-w-0 overflow-y-auto">
             <AddTasks/>
-            <DynamicColorSlider/>
         </div>
         <div className="flex-none">
             <UtilityBar/>

@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from "react";
+import LoginButton from "./LoginButton"
 
 export const DynamicColorSlider: React.FC = () => {
   const [value, setValue] = useState<number>(50);
@@ -12,10 +13,14 @@ export const DynamicColorSlider: React.FC = () => {
   };
 
   return (
-    <div className="p-6  border  bg-[#020617] border-zinc-800 rounded-2xl max-w-md mx-auto shadow-xl">
+    <div className="p-6  border  bg-[#0f172a] border-zinc-800 rounded-2xl max-w-md mx-auto shadow-xl">
       {/* Header section tracking metric values */}
       <div className="flex justify-between items-center mb-6">
-        
+        <div className="flex-row ">
+
+        <h1 className="text-[#34d399]">Give Feedback</h1>
+        <pre className="text-xs">only for the non quantative tasks</pre>
+        </div>
         <span 
           className="text-xl font-black font-mono px-3 py-1 rounded-md transition-colors duration-150"
           style={{ color: activeColor }}
@@ -25,7 +30,7 @@ export const DynamicColorSlider: React.FC = () => {
       </div>
 
       {/* Slider Track Wrapper */}
-      <div className="relative flex items-center group">
+      <div className="relative flex gap-4 items-center  group">
         <input
           id="intensity-slider"
           type="range"
@@ -39,6 +44,8 @@ export const DynamicColorSlider: React.FC = () => {
             background: `linear-gradient(to right, hsl(0, 88%, 62%) 0%, hsl(60, 81%, 76%) 50%, hsl(120, 100%, 72%) 100%)`,
           }}
         />
+        <LoginButton label={'submit'}/>
+
       </div>
 
     

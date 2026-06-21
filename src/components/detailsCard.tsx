@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import { getTaskByDateService } from '../services/task.services';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
 interface TaskData {
     workout: boolean;
     commits: number;
@@ -123,6 +122,7 @@ export default function Details() {
                             </div>
                         </div>
 
+                        
                     </div>
                 )}
             </div>
