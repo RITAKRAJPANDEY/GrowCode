@@ -26,7 +26,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                     href={`/feedback/${dayjs().format('YYYY-MM-DD')}`}
-                     className={` ${pathname===`/task/details/${dayjs().format('YYYY-MM-DD')}`?"text-green-300 ":"text-slate-400"} flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all `}
+                     className={` ${pathname===`/feedback/${dayjs().format('YYYY-MM-DD')}`?"text-green-300 ":"text-slate-400"} flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all `}
                 >
                     Add Feedback
                 </Link>
