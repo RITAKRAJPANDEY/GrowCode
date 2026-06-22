@@ -30,6 +30,7 @@ io.on('connection',(socket:Socket)=>{
 });
 
 const port = Number(process.env.SOCKET_PORT)||3001;
+
 httpServer.listen(port,()=>{
     console.log(`Socket running  on port ${port}`);
 })

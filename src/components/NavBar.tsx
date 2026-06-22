@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import dayjs from "dayjs";
 
 export default function Navbar() {
+    
     const pathname = usePathname();
     return (
         <div className="fixed top-0 left-0 flex flex-col w-64 h-screen p-4 gap-10 bg-[#020617] text-[#f1f5f9]">

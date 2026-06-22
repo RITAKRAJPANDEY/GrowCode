@@ -11,7 +11,7 @@ export const addUserRepo = async (username: string, hashed_password: string, has
 }
 export const fetchUserRepo = async (username: string): Promise<userAuthDetails | null> => {
 
-    const result = await pool.query<userAuthDetails>(`SELECT id, active , password , created_at FROM users WHERE LOWER(username)=LOWER($1)`, [username]);
+    const result = await pool.query<userAuthDetails>(`SELECT id,username, active , password , created_at FROM users WHERE LOWER(username)=LOWER($1)`, [username]);
 
     return result.rows[0] || null;
 }
@@ -29,8 +29,8 @@ export const revokeAllRefreshTokens = async (user_id: string): Promise<tokenRevo
     const result = await pool.query<tokenRevocationionResult>(`UPDATE refreshtoken SET is_revoked=$1,revoked_at=NOW() WHERE user_id = $2 AND is_revoked=$3 RETURNING revoked_at`, [true, user_id, false]);
     return result.rows[0] || null;
 }
-export const fetchUserIdRepo = async (user_id: string): Promise<Pick<userRow, 'id' | 'role'> | null> => {
-    const result = await pool.query<Pick<userRow, 'id' | 'role'>>(`SELECT id, role FROM users WHERE id=$1`, [user_id]);
+export const fetchUserIdRepo = async (user_id: string): Promise<Pick<userRow,'id'|'username'|'role'> | null> => {
+    const result = await pool.query<Pick<userRow, 'id' | 'role'|'username'>>(`SELECT id,username, role FROM users WHERE id=$1`, [user_id]);
     return result.rows[0] || null;
 }
 export const addNewRefreshTokenRepo = async (newToken: string, user_id: string, oldToken: string): Promise<tokenCreateionResult | null> => {

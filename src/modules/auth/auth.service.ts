@@ -36,7 +36,7 @@ export const logInService = async ({ username, password }:logInInput) => {
         if (!isValid ) {
             throw new Unauthorized();
         }
-        const accessToken = createAccessToken(user.id, user.role);
+        const accessToken = createAccessToken(user.id, user.role,user.username);
         const refreshToken = genCryptoHash();
         const refreshTokenHash = shaHash(refreshToken);
         await storeTokenHashRepo(refreshTokenHash, user.id);
@@ -61,7 +61,7 @@ export const refreshTokenService=async({refreshToken}:{refreshToken:string})=>{
     if(!userId){
         throw new Unauthorized();
     }
-    const newAccessToken = createAccessToken(user.user_id,userId.role);
+    const newAccessToken = createAccessToken(user.user_id,userId.role,userId.username);
     const newRefreshToken = genCryptoHash();
     const tokenHash=shaHash(newRefreshToken);
    const token= await addNewRefreshTokenRepo(tokenHash,user.user_id,shaHash(refreshToken));//newtoken,userid,oldtoken

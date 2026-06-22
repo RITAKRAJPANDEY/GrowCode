@@ -8,8 +8,8 @@ export const bcryptHash = async(data:string)=>{
 export const bcryptCompare = async(password:string,hashed_password:string)=>{
     return await bcrypt.compare(password,hashed_password);
 }
-export const createAccessToken=(id:string,role:string)=>{
-    return jwt.sign({sub:id,role:role},env.ACCESS_TOKEN_SECRET,{expiresIn:"15m"});
+export const createAccessToken=(id:string,role:string,username:string)=>{
+    return jwt.sign({sub:id,role:role,username:username},env.ACCESS_TOKEN_SECRET,{expiresIn:"15m"});
 }
 export const validateAccessToken=(token:string)=>{
     try{
