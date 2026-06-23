@@ -58,7 +58,7 @@ export async function handleApiProtection(request:NextRequest):Promise<NextRespo
            const userId = (payload.decoded as  {sub:string}).sub;
            const username = (payload.decoded as {username:string}).username;
             requestHeaders.set('x-user-id', userId); 
-            requestHeaders.set('username',username);
+            requestHeaders.set('x-username',username);
             
             return NextResponse.next({
                 request: {
