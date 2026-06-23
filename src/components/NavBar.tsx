@@ -3,10 +3,24 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dayjs from "dayjs";
+import { useMemo, useState } from "react";
+import { fcreateChatservice } from "../services/chat.services";
+import {io} from 'socket.io-client';
 
 export default function Navbar() {
-    
     const pathname = usePathname();
+    const socket=useMemo(()=>io('http://localhost:3001'),[]);
+    const [username,setUsername]=useState<string|null>("");
+    const handleChat=async()=>{
+        const group='group';
+        const data = await fcreateChatservice(group);
+        if(data!==""){
+            setUsername(data.username);
+            const roomId=data.roomId;
+            socket.emit('join_room',roomId);
+        }
+    }
+    
     return (
         <div className="fixed top-0 left-0 flex flex-col w-64 h-screen p-4 gap-10 bg-[#020617] text-[#f1f5f9]">
 
@@ -25,7 +39,7 @@ export default function Navbar() {
                 >
                     Add Task
                 </Link>
-                <Link
+                <Link onClick={()=>handleChat()}
                     href={`/feedback/${dayjs().format('YYYY-MM-DD')}`}
                      className={` ${pathname===`/feedback/${dayjs().format('YYYY-MM-DD')}`?"text-green-300 ":"text-slate-400"} flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all `}
                 >
@@ -39,9 +53,9 @@ export default function Navbar() {
                     <h2 className="py-1 px-2 text-sm font-semibold uppercase tracking-wider text-[#34d399] bg-[#0f172a]/30 rounded">
                         Chat
                     </h2>
-                    <Link href="/" className={` ${pathname==="/group"?"text-green-300 ":"text-slate-400"} flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all `}>Group</Link>
-                    <Link href="/" className="flex py-1.5 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-lg hover:text-white text-slate-400">user1</Link>
-                    <Link href="/" className="flex py-1.5 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-lg hover:text-white text-slate-400">user2</Link>
+                    <Link href="/chat" className={` ${pathname==="/chat"?"text-green-300 ":"text-slate-400"} flex py-2 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-xl hover:text-green-300 transition-all `}>Group</Link>
+                    {/* <Link href="/chat?username=user1" className="flex py-1.5 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-lg hover:text-white text-slate-400">user1</Link>
+                    <Link href="/" className="flex py-1.5 justify-center hover:bg-[#0f172a] hover:scale-98 rounded-md w-full text-lg hover:text-white text-slate-400">user2</Link> */}
                 </div>
 
                 <div className="flex flex-col gap-2">

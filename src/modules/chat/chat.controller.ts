@@ -16,6 +16,7 @@ export const  createChatController= async(req:NextRequest):Promise<NextResponse>
     const chat = await createChatService(username,validatedData);
     return NextResponse.json({
       success:true,
+      username:username,
       roomId:chat.roomId,
       created_at:chat.created_at
     });

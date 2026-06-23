@@ -24,6 +24,7 @@ export const addTaskController=async(req:NextRequest):Promise<NextResponse>=>{
 export const getTaskController= async(req:NextRequest,date:Date):Promise<NextResponse>=>{//date and user_id
     try{
         const userId = req.headers.get('x-user-id')||"";
+       
         const validatedData = getTaskValidatorSchema.parse({date});
         const task = await getTaskService({validatedData:validatedData.date,userId});
         

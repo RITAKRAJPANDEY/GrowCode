@@ -27,7 +27,7 @@ export function handlePageRouting(request:NextRequest):NextResponse|null {
 export async function handleApiProtection(request:NextRequest):Promise<NextResponse|null> {
     const { pathname } = request.nextUrl;
 
-    const isTaskRoute = pathname === '/api/task' || pathname.startsWith('/api/task/');
+    const isTaskRoute = pathname === '/api/task' || pathname.startsWith('/api/task/')||'/api/chat'|| pathname.startsWith('/api/chat');
 
     if (isTaskRoute) {
         const authHeader = request.headers.get('authorization');
@@ -57,8 +57,8 @@ export async function handleApiProtection(request:NextRequest):Promise<NextRespo
            
            const userId = (payload.decoded as  {sub:string}).sub;
            const username = (payload.decoded as {username:string}).username;
-            requestHeaders.set('x-user-id', userId); 
-            requestHeaders.set('x-username',username);
+           requestHeaders.set('x-user-id', userId); 
+           requestHeaders.set('x-username',username);
             
             return NextResponse.next({
                 request: {
@@ -91,5 +91,5 @@ export async function proxy(request:NextRequest):Promise<NextResponse> {
 }
 
 export const config = {
-    matcher: ['/','/login','/api/task','/api/task/:path*']
+    matcher: ['/','/login','/api/task','/api/task/:path*','/api/chat','/api/chat/:path*']
 }
