@@ -10,6 +10,7 @@ The repository currently contains a functional base for:
 - authentication API routes for signup, login, logout, and token refresh
 - task API routes for creating and reading tasks
 - basic frontend pages and shared UI components for auth and task actions
+- a chat route scaffold and Socket.IO server setup
 - PostgreSQL connection helpers and environment-based configuration
 
 ## Completed Implementation
@@ -33,13 +34,23 @@ The repository currently contains a functional base for:
 - Reusable UI components for loading, actions, and shared layout
 - Tailwind and component-based styling support
 
+### Chat and Realtime
+- Chat route scaffold is present under the chat page flow
+- A Socket.IO server is included for realtime room-based messaging
+- The current chat implementation is a basic foundation rather than a full production chat experience
+
+### Containerization
+- Dockerfile and docker-compose.yaml are included for container-based setup
+- The repository includes a web service and PostgreSQL service for local development use
+
 ## Theoretical / Future Ideas
 
 The following items are not part of the finished implementation and are listed here only as theory or future direction:
 
 - full task editing and deletion workflow
 - advanced task dashboard and analytics
-- richer error and loading states across the experience
+- a complete chat experience with persistent messages and richer UI
+- full Socket.IO room management, presence, and user interactions
 - broader production hardening and deployment improvements
 
 ## Tech Stack
@@ -53,6 +64,7 @@ The following items are not part of the finished implementation and are listed h
 - Zod for validation
 - Zustand for state management
 - JWT and bcrypt libraries
+- Socket.IO and socket.io-client for realtime communication
 - MUI / Emotion, Radix UI, lucide-react, Three.js
 
 ## Project Structure
@@ -147,3 +159,13 @@ pnpm dev
 ```
 
 Then open http://localhost:3000.
+
+### Docker setup
+
+A Docker-based setup is also included for running the app with PostgreSQL:
+
+```bash
+docker compose up --build
+```
+
+This uses the provided Dockerfile and docker-compose.yaml to start the web app and database services. The Socket.IO server is separate from the main Next.js app and can be configured with the SOCKET_PORT environment variable.
