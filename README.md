@@ -1,37 +1,46 @@
 ﻿# WinterBreakers
 
-WinterBreakers is a Next.js task-management app with JWT-based authentication, task creation/fetch workflows, and a polished landing page. The current codebase combines a Next.js 16 frontend with server-side API routes, PostgreSQL access, and shared UI components.
+WinterBreakers is a Next.js task-management app with a working foundation for authentication, task handling, and the main UI flow. This README focuses on what is already implemented in the repository, while leaving advanced or incomplete ideas clearly marked as theoretical.
 
-## Overview
+## Current Status
 
-This repository is the working implementation of the project, not just a starter template. It includes:
+The repository currently contains a functional base for:
 
-- a modern Next.js app shell and animated landing page
-- authentication routes for signup, login, logout, and refresh
-- task API routes for creating and retrieving tasks
-- service-layer helpers for frontend API communication and token refresh
-- PostgreSQL integration via the app's database utility and environment validation
+- a Next.js app shell and landing page
+- authentication API routes for signup, login, logout, and token refresh
+- task API routes for creating and reading tasks
+- basic frontend pages and shared UI components for auth and task actions
+- PostgreSQL connection helpers and environment-based configuration
 
-## Current Features
+## Completed Implementation
 
 ### Authentication
-- User signup and login flow with request validation
-- JWT access token issuance and refresh-token handling
-- Secure cookie-based refresh-token support
-- Logout route and token refresh logic
+- Signup and login flow with request validation
+- JWT-based access-token handling
+- Refresh-token support through cookies
+- Logout route and basic auth middleware
 - Password hashing with bcrypt / bcryptjs
 
-### Task Management
+### Task Handling
 - Task creation endpoint wired through the API layer
 - Task retrieval endpoint available in the task route handler
-- Validation using Zod for incoming data
-- Task service modules in the project structure for business logic
+- Validation for incoming task data
+- Service and repository modules for task logic
 
 ### UI and Experience
-- Landing page with animated visuals and hero content
-- Navigation and login/logout entry points
-- Reusable components for loading, action buttons, and dashboard visuals
-- Tailwind + MUI / Emotion styling support
+- Landing page and navigation structure
+- Login and task-related pages
+- Reusable UI components for loading, actions, and shared layout
+- Tailwind and component-based styling support
+
+## Theoretical / Future Ideas
+
+The following items are not part of the finished implementation and are listed here only as theory or future direction:
+
+- full task editing and deletion workflow
+- advanced task dashboard and analytics
+- richer error and loading states across the experience
+- broader production hardening and deployment improvements
 
 ## Tech Stack
 
@@ -129,7 +138,7 @@ ACCESS_TOKEN_SECRET=your_access_token_secret
 REFRESHTOKENSECRET=your_refresh_token_secret
 ```
 
-The env validation in src/lib/env.ts expects these values to be present at runtime.
+The environment validation in src/lib/env.ts expects these values to be present at runtime.
 
 ### Run the app
 
@@ -138,19 +147,3 @@ pnpm dev
 ```
 
 Then open http://localhost:3000.
-
-## Notes for the Current Codebase
-
-- Access tokens are stored in localStorage on the client side.
-- Refresh tokens are handled through secure cookies.
-- The shared API client in src/services/apiClient.js adds the auth header and handles refresh on 401 responses.
-- Authentication logic is implemented in src/modules/auth, and task logic is implemented in src/modules/task.
-- The landing page entry point is src/app/page.tsx.
-
-## Next Steps
-
-Possible follow-up work for this project includes:
-- expanding task CRUD beyond create/fetch
-- improving task listing and dashboard analytics
-- adding stronger UI states for errors and loading
-- hardening deployment and environment handling
