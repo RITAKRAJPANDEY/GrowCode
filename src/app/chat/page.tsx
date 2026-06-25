@@ -1,32 +1,30 @@
-import { fcreateChatservice } from "@/src/services/chat.services";
-import { useChatStore } from "@/src/store";
-import { useEffect, useState } from "react";
+'use client';
 
-interface MessagePayload{
-    message:string;
-    roomId:string;
-    senderId:string;
-}
+import Navbar from "@/src/components/NavBar";
+import UtilityBar from "@/src/components/UtilityBar";
+import Chat from "@/src/components/Chat";
+
 export default function  ChatPage() {
-    const sendMessage=useChatStore((state)=>state.sendMessage);
-    const socket = useChatStore((state)=>state.socket);
-    const joinRoom=useChatStore((state)=>state.joinRoom);
-    const isConnected=useChatStore((state)=>state.isConnected);
+  return (
+    /* 1. Global Wrapper: Set up a three-column grid that fills the viewport */
+    <div className="grid grid-cols-[240px_1fr_300px] h-screen w-screen overflow-hidden bg-slate-950">
+      
+      {/* LEFT SIDEBAR (GrowCode menu) */}
+      <aside className="h-full border-r border-slate-800 bg-slate-900">
+        <Navbar/>
+      </aside>
 
-    const [chatMessage,setChatMessage]=useState<MessagePayload[]>([]);
-    const [message,setMessage]=useState('');
+      {/* CENTER COLUMN (Your actual Chat page.tsx renders here) */}
+      <main className="h-full overflow-hidden min-w-0">
+       <Chat/>
+      </main>
 
-    useEffect(()=>{
-        let roomId;
-        const fetchRoomId = async()=>{
-            const data =await fcreateChatservice('group');
-            roomId=data.roomId;
-        }
-        if(isConnected&&roomId){
-            joinRoom(roomId)
-        }
-    },[isConnected,joinRoom]);
+      {/* RIGHT SIDEBAR (Tasks menu) */}
+      <aside className="h-full border-l border-slate-800 ">
+      <UtilityBar/>
+      </aside>
 
-
+    </div>
+  );
     
 }

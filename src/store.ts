@@ -81,7 +81,7 @@ interface ChatStore{
     initSocket:()=>void;
     disconnectSocket:()=>void;
     joinRoom:(roomId:string)=>void;
-    sendMessage:({roomId,message}:{roomId:string,message:string})=>void;
+    sendMessage:({roomId,message,senderId}:{roomId:string,message:string,senderId:string})=>void;
 }
 
 export const useChatStore = create<ChatStore>((set,get)=>({
@@ -116,10 +116,10 @@ export const useChatStore = create<ChatStore>((set,get)=>({
             socket.emit('join_room',roomId)
         }
     },
-    sendMessage:({roomId,message})=>{
+    sendMessage:({roomId,message,senderId})=>{
         const {socket}=get();
         if(socket){
-            socket.emit('send_message',{roomId,message});
+            socket.emit('send_message',{roomId,message,senderId});
         }
     }
 
