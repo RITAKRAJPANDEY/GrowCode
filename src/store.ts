@@ -3,7 +3,7 @@ import { addTaskService, fetchTasks } from "./services/task.services";
 import dayjs from "dayjs";
 
 import {io,Socket} from "socket.io-client"
-import { fcreateChatservice } from "./services/chat.services";
+
 
 interface Task {
     id?: string;
@@ -80,6 +80,8 @@ interface ChatStore{
     isConnected:boolean;
     initSocket:()=>void;
     disconnectSocket:()=>void;
+    joinRoom:(roomId:string)=>void;
+    sendMessage:({roomId,message}:{roomId:string,message:string})=>void;
 }
 
 export const useChatStore = create<ChatStore>((set,get)=>({
@@ -87,11 +89,17 @@ export const useChatStore = create<ChatStore>((set,get)=>({
     isConnected:false,
     initSocket:()=>{
         if(get().socket)return;
-        const socketInstance = io({
+        const socketUrl = typeof window !== 'undefined'
+            ? `http://${window.location.hostname}:3001`
+            : 'http://localhost:3001';
+        const socketInstance = io(socketUrl, {
             autoConnect:true,
+            reconnection:true,
+            transports:['websocket']
         });
         socketInstance.on('connect',()=>set({isConnected:true}));
         socketInstance.on('disconnect',()=>set({isConnected:false}));
+        socketInstance.on('connect_error',()=>set({isConnected:false}));
         set({socket:socketInstance})
     },
     disconnectSocket:()=>{
@@ -101,14 +109,14 @@ export const useChatStore = create<ChatStore>((set,get)=>({
             set({isConnected:false,socket:null});
         }
     },
-    joinRoom:(roomId:string)=>{
+    joinRoom:(roomId)=>{
         
         const {socket}=get();
         if(socket){
             socket.emit('join_room',roomId)
         }
     },
-    sendMessage:({roomId,message}:{roomId:string,message:string})=>{
+    sendMessage:({roomId,message})=>{
         const {socket}=get();
         if(socket){
             socket.emit('send_message',{roomId,message});

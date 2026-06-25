@@ -34,7 +34,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 INSERT INTO users (id, role, email, username, password) 
 VALUES (
-    'fe143647-3199-4e3e-9ac7-a1a44fef5f0f',             
+    'fe143657-3199-4e3e-9ac7-a1a44fef5f0f',             
     'admin',                                            
     'admin@growcode.com',                               
     'password',                                            
