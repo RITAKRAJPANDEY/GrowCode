@@ -7,7 +7,7 @@ const httpServer = http.createServer();
 // mount the websocket to it for initial handshake as well decoupling 
 const io = new Server(httpServer,{
     cors:{
-        origin:'http://localhost:3001',
+        origin:"http://localhost:3001",
         methods:['GET','POST'],
     }
 })
@@ -22,7 +22,7 @@ io.on('connection',(socket:Socket)=>{
     });
     
     socket.on('send_message',(data)=>{
-        socket.to(data.roomId).emit('recieve_message',data);
+        socket.to(data.roomId).emit('recieve_message',data.message);
     });
 
     socket.on('disconnect',()=>{})
