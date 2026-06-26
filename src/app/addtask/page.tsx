@@ -1,5 +1,4 @@
 'use client';
-import { DynamicColorSlider } from "@/src/components/slider";
 import AddTasks from "../../components/AddTask";
 import Navbar from "../../components/NavBar";
 import UtilityBar from "../../components/UtilityBar";
