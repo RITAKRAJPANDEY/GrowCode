@@ -1,43 +1,37 @@
 ﻿# WinterBreakers
 
-WinterBreakers is a Next.js task-management app with a working foundation for authentication, task handling, and the main UI flow. This README focuses on what is already implemented in the repository, while leaving advanced or incomplete ideas clearly marked as theoretical.
+WinterBreakers is a task-management and realtime collaboration app with an authenticated workflow, daily task tracking, and a working group chat experience. The current build is centered on a usable product experience: users can sign in, manage tasks, and exchange live messages through a Socket.IO server powered by the root server.ts file.
 
 ## Current Status
 
-The repository currently contains a functional base for:
+The repository now includes a working foundation for:
 
 - a Next.js app shell and landing page
 - authentication API routes for signup, login, logout, and token refresh
-- task API routes for creating and reading tasks
-- basic frontend pages and shared UI components for auth and task actions
-- a chat route scaffold and Socket.IO server setup
+- task APIs for creating and reading tasks
+- frontend pages and shared UI components for auth, tasks, and chat
+- a live group chat experience backed by a Socket.IO server
 - PostgreSQL connection helpers and environment-based configuration
 
 ## Completed Implementation
 
-### Authentication
-- Signup and login flow with request validation
-- JWT-based access-token handling
-- Refresh-token support through cookies
-- Logout route and basic auth middleware
+### Core Product Experience
+- Signup, login, logout, and token refresh flows with validation
+- Task creation and retrieval for everyday planning and tracking
+- Group chat support with realtime message exchange in a shared room
+- Reusable UI for auth, task actions, and chat interactions
+
+### Technical Foundation
+- JWT-based access-token handling and refresh-token support through cookies
 - Password hashing with bcrypt / bcryptjs
-
-### Task Handling
-- Task creation endpoint wired through the API layer
-- Task retrieval endpoint available in the task route handler
-- Validation for incoming task data
-- Service and repository modules for task logic
-
-### UI and Experience
-- Landing page and navigation structure
-- Login and task-related pages
-- Reusable UI components for loading, actions, and shared layout
-- Tailwind and component-based styling support
+- Service, repository, and validation layers for auth and task logic
+- PostgreSQL integration and environment-based configuration
+- A Socket.IO server in the root server.ts file for realtime messaging
 
 ### Chat and Realtime
-- Chat route scaffold is present under the chat page flow
-- A Socket.IO server is included for realtime room-based messaging
-- The current chat implementation is a basic foundation rather than a full production chat experience
+- Group chat is available through the app’s chat interface
+- The root Socket.IO server is operational and handles room-based messaging
+- The current experience is focused on a lightweight but functional realtime chat flow
 
 ### Containerization
 - Dockerfile and docker-compose.yaml are included for container-based setup
@@ -119,6 +113,7 @@ pnpm dev
 pnpm build
 pnpm start
 pnpm lint
+node server.ts
 ```
 
 ## Local Setup
@@ -154,11 +149,19 @@ The environment validation in src/lib/env.ts expects these values to be present 
 
 ### Run the app
 
+Start the realtime Socket.IO server from the project root:
+
+```bash
+node server.ts
+```
+
+Then start the Next.js app in a separate terminal:
+
 ```bash
 pnpm dev
 ```
 
-Then open http://localhost:3000.
+Open http://localhost:3000 for the web app. The Socket.IO server runs on port 3001 by default.
 
 ### Docker setup
 
