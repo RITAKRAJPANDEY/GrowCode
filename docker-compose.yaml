@@ -3,9 +3,10 @@ version: '3.8'
 services:
   web:
     build: .
+    command: node .next/standalone/server.js
     ports:
       - "3000:3000"
-    environment:
+    environment: &env-vars
       - DB_USER=rpsfv
       - DB_HOST=db
       - DB_NAME=growcode
@@ -19,6 +20,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
+  socket-server:
+    build: .
+    command: node dist/server.js
+    environment: *env-vars
+    depends_on:
+      db:
+        condition: service_healthy
+
   db:
     image: postgres:15-alpine
     environment:
