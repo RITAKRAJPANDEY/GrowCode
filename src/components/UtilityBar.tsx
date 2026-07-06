@@ -19,7 +19,7 @@ export default function UtilityBar() {
     loadInitialData()
     },[fetchTasksByDate])
     return (
-        <div className="fixed top-0 right-0 flex flex-col w-64 h-screen p-4 gap-10 bg-[#020617] ">
+        <div className="fixed top-0 right-0 flex flex-col w-64 h-screen p-4 gap-8 bg-[#020617] ">
 
 
             <div className="bg-[#020617] rounded-md">

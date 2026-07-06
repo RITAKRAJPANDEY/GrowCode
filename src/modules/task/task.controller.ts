@@ -1,7 +1,7 @@
 import { NextResponse,NextRequest } from "next/server";
 import { errorHandlerMiddleware } from "../../middleware/error.handler.middleware";
-import { addTaskService, allTaskDataService, getTaskService } from "./task.service";
-import { getTaskValidatorSchema, queryValidationSchema, taskValidatorSchema } from "./task.validator";
+import { addFeedbackService, addTaskService, allTaskDataService, getTaskService } from "./task.service";
+import { feedbackValidatorSchema, getTaskValidatorSchema, queryValidationSchema, taskValidatorSchema } from "./task.validator";
 
 export const addTaskController=async(req:NextRequest):Promise<NextResponse>=>{
     try{
@@ -66,5 +66,20 @@ try{
     })
 }catch(err:unknown){
     return errorHandlerMiddleware(err)
+}
+}
+
+export const addFeedbackController=async(req:NextRequest):Promise<NextResponse>=>{
+try{
+const rawData= await req.json();
+const validatedData = feedbackValidatorSchema.parse(rawData);
+const userId= req.headers.get('x-user-id')||null;
+ await addFeedbackService(userId,validatedData.feedback);
+return NextResponse.json({
+    success:true
+});
+
+}catch(err:unknown){
+    return errorHandlerMiddleware(err);
 }
 }

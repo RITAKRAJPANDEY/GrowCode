@@ -116,4 +116,5 @@ export const dynamicTaskQueryRepo = async (searchParam:QueryParams) => {
    
 
     return { data: row, hasMore: hasMore };
-}
+};
+

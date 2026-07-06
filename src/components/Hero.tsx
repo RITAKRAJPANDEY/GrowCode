@@ -1,6 +1,7 @@
 'use client';
 import { useRouter } from "next/navigation";
 import Button from "./Button"
+import Link from "next/link";
 export default function Hero() {
     const router = useRouter();
    return (
@@ -24,9 +25,9 @@ export default function Hero() {
                 </div>
                 <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center pointer-events-auto">
                     <Button path={()=>router.push('/addtask')} label="Add Task"/>
-                    <button className="px-8 py-3 bg-slate-900/60 text-slate-300 font-semibold rounded-xl border border-slate-800 hover:bg-slate-800/80 transition-all backdrop-blur-sm">
-                        View Dashboard
-                    </button>
+                    <Link href={'/chat'}  className="px-8 py-3 bg-slate-900/60 text-slate-300 font-semibold rounded-xl border border-slate-800 hover:bg-slate-800/80 transition-all backdrop-blur-sm">
+                        Chat
+                    </Link>
                 </div>
             </div>
         </div>

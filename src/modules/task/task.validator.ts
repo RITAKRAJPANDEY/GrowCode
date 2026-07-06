@@ -49,4 +49,9 @@ export const queryValidationSchema = z.object({
     direction:z.enum(['next','prev']).default('next').nullish(),
 
 });
+
+export const feedbackValidatorSchema=z.object({
+    feedback:z.number().min(0).max(100)
+});
+
 export type QueryParams = z.infer<typeof queryValidationSchema>
