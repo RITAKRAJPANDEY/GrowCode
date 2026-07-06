@@ -73,5 +73,9 @@ export const addFeedbackService = async (userId: string | null, feedback: number
     if (!userId) {
         throw new Unauthorized();
     }
-    await addFeedbackRepo(feedback,userId,date);
+    const data = await addFeedbackRepo(feedback,userId,date);
+    if(!data){
+        throw new AppError("No Task For This Date Found ",404);
+    }
+    return data;
 }

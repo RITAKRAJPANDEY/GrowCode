@@ -119,5 +119,6 @@ export const dynamicTaskQueryRepo = async (searchParam:QueryParams) => {
 };
 
 export const addFeedbackRepo=async(feedback:number,userId:string,date:Date)=>{
-    
+    const result = await pool.query(`INSERT INTO tasks (feedback) VALUES ($1) WHERE user_id=$2 and date=$3 RETURNING created_at `);
+    return result.rows||null;
 }

@@ -74,7 +74,7 @@ try{
 const rawData= await req.json();
 const validatedData = feedbackValidatorSchema.parse(rawData);
 const userId= req.headers.get('x-user-id')||null;
- await addFeedbackService(userId,validatedData.feedback,date);
+await addFeedbackService(userId,validatedData.feedback,date);
 return NextResponse.json({
     success:true
 });
