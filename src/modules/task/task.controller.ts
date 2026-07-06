@@ -69,12 +69,12 @@ try{
 }
 }
 
-export const addFeedbackController=async(req:NextRequest):Promise<NextResponse>=>{
+export const addFeedbackController=async(req:NextRequest,date:Date):Promise<NextResponse>=>{
 try{
 const rawData= await req.json();
 const validatedData = feedbackValidatorSchema.parse(rawData);
 const userId= req.headers.get('x-user-id')||null;
- await addFeedbackService(userId,validatedData.feedback);
+ await addFeedbackService(userId,validatedData.feedback,date);
 return NextResponse.json({
     success:true
 });

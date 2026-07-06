@@ -10,6 +10,9 @@ export const GET = async(req:NextRequest,context:ParamsData)=>{
     const parseDate=new Date(date)
 return await getTaskController(req,parseDate);
 }
-export const  POST = async(req:NextRequest):Promise<NextResponse>=>{
-    return await addFeedbackController(req);
+export const  POST = async(req:NextRequest,context:ParamsData):Promise<NextResponse>=>{
+    const {date}=await context.params;
+    const parseDate=new Date(date);
+
+    return await addFeedbackController(req,parseDate);
 }

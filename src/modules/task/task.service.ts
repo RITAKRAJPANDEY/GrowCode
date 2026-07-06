@@ -1,4 +1,4 @@
-import { addTaskRepo, dynamicTaskQueryRepo, getTaskRepo } from "./task.repository";
+import { addFeedbackRepo, addTaskRepo, dynamicTaskQueryRepo, getTaskRepo } from "./task.repository";
 import { AppError } from "../../errors/AppError";
 import { Unauthorized } from "../../errors/Unauthorized"
 import { BadRequestError } from "../../errors/BadRequestError";
@@ -69,9 +69,9 @@ export const allTaskDataService = async (searchParams: QueryParams, userId: stri
     return { tasks: data, prevCursor: prevCursor, nextCursor: nextCursor };
 }
 
-export const addFeedbackService = async (userId: string | null, validatedData: number) => {
+export const addFeedbackService = async (userId: string | null, feedback: number,date:Date) => {
     if (!userId) {
         throw new Unauthorized();
     }
-
+    await addFeedbackRepo(feedback,userId,date);
 }

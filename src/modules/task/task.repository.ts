@@ -118,3 +118,6 @@ export const dynamicTaskQueryRepo = async (searchParam:QueryParams) => {
     return { data: row, hasMore: hasMore };
 };
 
+export const addFeedbackRepo=async(feedback:number,userId:string,date:Date)=>{
+    
+}
