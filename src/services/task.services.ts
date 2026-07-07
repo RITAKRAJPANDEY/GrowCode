@@ -104,3 +104,12 @@ export const fetchTasks = async (config: config) => {
         throw err;
     }
 }
+
+export const fetchFeedback = async (date:Date)=>{
+    try{
+        const res = await apiClient.post(`/api/${date}`);
+        return res.data;
+    }catch(err:unknown){
+        console.error(err);
+    }
+}
