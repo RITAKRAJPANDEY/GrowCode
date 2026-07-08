@@ -1,16 +1,22 @@
 import React, { useState, ChangeEvent } from "react";
 import LoginButton from "./LoginButton"
+import { ffetchFeedbackService } from "../services/task.services";
+import { useParams } from "next/navigation";
+import { ReactFormState } from "react-dom/client";
 
-export const DynamicColorSlider: React.FC = () => {
+export const DynamicColorSlider = () => {
   const [value, setValue] = useState<number>(50);
-
-  // Mathematically maps 0-100 to HSL Hue angles (0 = Red, 60 = Yellow, 120 = Green)
+  const {date}=useParams<{date:string}>();
+  
+  const handelSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    ffetchFeedbackService(date,value);
+  }
+  
   const hue = value * 1.2;
   const activeColor = `hsl(${hue}, 85%, 45%)`;
 
-  const handleSliderChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(Number(e.target.value));
-  };
+ 
 
   return (
     <div className="p-6  border  bg-[#0f172a] border-zinc-800 rounded-2xl max-w-md mx-auto shadow-xl">
@@ -18,10 +24,10 @@ export const DynamicColorSlider: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <div className="flex-row ">
 
-        <h1 className="text-[#34d399]">Give Feedback</h1>
-        <pre className="text-xs">only for the non quantative tasks</pre>
+          <h1 className="text-[#34d399]">Give Feedback</h1>
+          <pre className="text-xs">only for the non quantative tasks</pre>
         </div>
-        <span 
+        <span
           className="text-xl font-black font-mono px-3 py-1 rounded-md transition-colors duration-150"
           style={{ color: activeColor }}
         >
@@ -30,25 +36,30 @@ export const DynamicColorSlider: React.FC = () => {
       </div>
 
       {/* Slider Track Wrapper */}
-      <div className="relative flex gap-4 items-center  group">
-        <input
-          id="intensity-slider"
-          type="range"
-          min="0"
-          max="100"
-          value={value}
-          onChange={handleSliderChange}
-          className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-zinc-100 bg-zinc-700 outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
-          style={{
-            // Hardcoded linear matrix fallback ensures cross-browser background blending
-            background: `linear-gradient(to right, hsl(0, 88%, 62%) 0%, hsl(60, 81%, 76%) 50%, hsl(120, 100%, 72%) 100%)`,
-          }}
-        />
-        <LoginButton label={'submit'}/>
-
+     
+        <form onSubmit={handelSubmit}>
+           <div className="relative flex gap-4 items-center  group">
+          <input
+            id="intensity-slider"
+            type="range"
+            min="0"
+            max="100"
+            value={value}
+            
+            onChange={(e)=>setValue(Number(e.target.value))}
+            className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-zinc-100 bg-zinc-700 outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
+            style={{
+              // Hardcoded linear matrix fallback ensures cross-browser background blending
+              background: `linear-gradient(to right, hsl(30, 100%, 89%) 0%, hsl(0, 100%, 98%) 50%, hsl(120, 100%, 92%) 100%)`,
+            }}
+          />
+          <LoginButton label={'submit'} />
       </div>
+        </form>
 
-    
+
+
+
     </div>
   );
 };

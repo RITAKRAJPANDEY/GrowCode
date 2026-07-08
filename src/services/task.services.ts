@@ -105,9 +105,9 @@ export const fetchTasks = async (config: config) => {
     }
 }
 
-export const fetchFeedback = async (date:Date)=>{
+export const ffetchFeedbackService = async (date:string,value:number)=>{
     try{
-        const res = await apiClient.post(`/api/${date}`);
+        const res = await apiClient.post(`/task/${date}`,value);
         return res.data;
     }catch(err:unknown){
         console.error(err);

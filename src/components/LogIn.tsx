@@ -116,7 +116,7 @@ export default function LogIn() {
 
                         <p className="text-xs text-center w-full text-slate-400 mt-2">
                             {`Don't have an Account? `}
-                            <span className="text-blue-400 text-xs cursor-pointer hover:underline">Fuck Off</span>
+                            <span className="text-blue-400 text-xs cursor-pointer hover:underline">go away</span>
                         </p>
                     </form>
 
